@@ -1,0 +1,261 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const recentPosts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
+const featuredWork = (await getCollection('portfolio'))
+  .filter((item) => item.data.featured)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
+const formatDate = (date: Date) =>
+  date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+---
+
+<BaseLayout title="Home" description="Hi, I'm Your Name — a software developer who writes about code, design, and the web.">
+  <!-- Hero -->
+  <section class="hero page-container">
+    <div class="hero-inner">
+      <p class="hero-eyebrow">Hello, I'm</p>
+      <h1>Your Name</h1>
+      <p class="hero-tagline">
+        Software developer passionate about building well-crafted products. I write about
+        code, design, and lessons learned along the way.
+      </p>
+      <div class="hero-cta">
+        <a href="/portfolio" class="btn btn-primary">View My Work</a>
+        <a href="/blog" class="btn btn-secondary">Read the Blog</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recent posts -->
+  {recentPosts.length > 0 && (
+    <section class="section page-container">
+      <div class="section-header">
+        <h2>Recent Posts</h2>
+        <a href="/blog" class="section-link">All posts &rarr;</a>
+      </div>
+      <ul class="post-list" role="list">
+        {recentPosts.map((post) => (
+          <li class="post-item">
+            <a href={`/blog/${post.id}`} class="post-link">
+              <span class="post-title">{post.data.title}</span>
+              <span class="post-meta">
+                <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+              </span>
+            </a>
+            <p class="post-description">{post.data.description}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  <!-- Featured work -->
+  {featuredWork.length > 0 && (
+    <section class="section page-container">
+      <div class="section-header">
+        <h2>Featured Work</h2>
+        <a href="/portfolio" class="section-link">All projects &rarr;</a>
+      </div>
+      <ul class="card-grid" role="list">
+        {featuredWork.map((item) => (
+          <li class="card">
+            <a href={`/portfolio/${item.id}`} class="card-link">
+              <h3 class="card-title">{item.data.title}</h3>
+              <p class="card-description">{item.data.description}</p>
+              <ul class="tag-list" aria-label="Technologies">
+                {item.data.tags.map((tag) => <li><span class="tag">{tag}</span></li>)}
+              </ul>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  /* Hero */
+  .hero {
+    padding-top: 5rem;
+    padding-bottom: 4rem;
+  }
+
+  .hero-inner {
+    max-width: 600px;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.25rem, 6vw, 3.5rem);
+    margin-bottom: 1rem;
+  }
+
+  .hero-tagline {
+    font-size: 1.125rem;
+    color: var(--color-muted);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    max-width: 55ch;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.6rem 1.25rem;
+    border-radius: var(--radius);
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: opacity 0.15s, box-shadow 0.15s;
+  }
+
+  .btn-primary {
+    background: var(--color-accent);
+    color: #fff;
+  }
+
+  .btn-primary:hover {
+    opacity: 0.88;
+    text-decoration: none;
+  }
+
+  .btn-secondary {
+    background: var(--color-surface);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+  }
+
+  .btn-secondary:hover {
+    opacity: 0.75;
+    text-decoration: none;
+  }
+
+  /* Section */
+  .section {
+    padding-top: 0;
+    padding-bottom: 4rem;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+  }
+
+  .section-header h2 {
+    margin: 0;
+  }
+
+  .section-link {
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+
+  /* Post list */
+  .post-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .post-link {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    text-decoration: none;
+    color: var(--color-text);
+  }
+
+  .post-link:hover .post-title {
+    color: var(--color-accent);
+    text-decoration: underline;
+  }
+
+  .post-title {
+    font-weight: 600;
+  }
+
+  .post-meta {
+    font-size: 0.825rem;
+    color: var(--color-muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .post-description {
+    font-size: 0.925rem;
+    color: var(--color-muted);
+    margin: 0.25rem 0 0;
+    line-height: 1.6;
+  }
+
+  /* Card grid */
+  .card-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .card {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    transition: box-shadow 0.2s, border-color 0.2s;
+  }
+
+  .card:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--color-accent);
+  }
+
+  .card-link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1.25rem;
+    text-decoration: none;
+    color: inherit;
+    height: 100%;
+  }
+
+  .card-title {
+    font-size: 1.05rem;
+    margin: 0;
+  }
+
+  .card-description {
+    font-size: 0.9rem;
+    color: var(--color-muted);
+    margin: 0;
+    flex: 1;
+    line-height: 1.6;
+  }
+</style>

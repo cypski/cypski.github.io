@@ -1,0 +1,144 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const projects = (await getCollection('portfolio'))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const featured = projects.filter((p) => p.data.featured);
+const others = projects.filter((p) => !p.data.featured);
+---
+
+<BaseLayout title="Portfolio" description="A selection of projects I've built and shipped.">
+  <div class="page-container">
+    <header class="page-header">
+      <h1>Portfolio</h1>
+      <p>A selection of projects I've built and shipped.</p>
+    </header>
+
+    {projects.length === 0 ? (
+      <p class="empty-state">Projects coming soon.</p>
+    ) : (
+      <>
+        {featured.length > 0 && (
+          <section class="portfolio-section">
+            <h2 class="section-label">Featured</h2>
+            <ul class="card-grid" role="list">
+              {featured.map((item) => (
+                <li class="card card--featured">
+                  <a href={`/portfolio/${item.id}`} class="card-link">
+                    <h3 class="card-title">{item.data.title}</h3>
+                    <p class="card-description">{item.data.description}</p>
+                    <ul class="tag-list" aria-label="Technologies">
+                      {item.data.tags.map((tag) => <li><span class="tag">{tag}</span></li>)}
+                    </ul>
+                    <div class="card-actions">
+                      {item.data.liveUrl && <span class="card-cta">View Project &rarr;</span>}
+                    </div>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {others.length > 0 && (
+          <section class="portfolio-section">
+            {featured.length > 0 && <h2 class="section-label">Other Work</h2>}
+            <ul class="card-grid" role="list">
+              {others.map((item) => (
+                <li class="card">
+                  <a href={`/portfolio/${item.id}`} class="card-link">
+                    <h3 class="card-title">{item.data.title}</h3>
+                    <p class="card-description">{item.data.description}</p>
+                    <ul class="tag-list" aria-label="Technologies">
+                      {item.data.tags.map((tag) => <li><span class="tag">{tag}</span></li>)}
+                    </ul>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+      </>
+    )}
+  </div>
+</BaseLayout>
+
+<style>
+  .empty-state {
+    color: var(--color-muted);
+    font-size: 1.05rem;
+  }
+
+  .portfolio-section {
+    margin-bottom: 3rem;
+  }
+
+  .section-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-muted);
+    margin-bottom: 1rem;
+  }
+
+  .card-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .card {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    transition: box-shadow 0.2s, border-color 0.2s;
+  }
+
+  .card--featured {
+    border-color: var(--color-accent);
+  }
+
+  .card:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--color-accent);
+  }
+
+  .card-link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 1.4rem;
+    text-decoration: none;
+    color: inherit;
+    height: 100%;
+  }
+
+  .card-title {
+    font-size: 1.1rem;
+    margin: 0;
+  }
+
+  .card-description {
+    font-size: 0.9rem;
+    color: var(--color-muted);
+    margin: 0;
+    flex: 1;
+    line-height: 1.6;
+  }
+
+  .card-actions {
+    margin-top: 0.25rem;
+  }
+
+  .card-cta {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-accent);
+  }
+</style>

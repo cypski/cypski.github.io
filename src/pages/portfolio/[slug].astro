@@ -1,0 +1,96 @@
+---
+import ProseLayout from '../../layouts/ProseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('portfolio');
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+---
+
+<ProseLayout
+  title={project.data.title}
+  description={project.data.description}
+  pubDate={project.data.pubDate}
+  tags={project.data.tags}
+>
+  {(project.data.liveUrl || project.data.repoUrl) && (
+    <div class="project-links">
+      {project.data.liveUrl && (
+        <a href={project.data.liveUrl} target="_blank" rel="noopener noreferrer" class="project-link project-link--primary">
+          View Live &rarr;
+        </a>
+      )}
+      {project.data.repoUrl && (
+        <a href={project.data.repoUrl} target="_blank" rel="noopener noreferrer" class="project-link project-link--secondary">
+          Source Code
+        </a>
+      )}
+    </div>
+  )}
+
+  <Content />
+
+  <nav class="post-nav" aria-label="Back to portfolio">
+    <a href="/portfolio" class="back-link">&larr; Back to portfolio</a>
+  </nav>
+</ProseLayout>
+
+<style>
+  .project-links {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+
+  .project-link {
+    display: inline-block;
+    padding: 0.5rem 1.1rem;
+    border-radius: var(--radius);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: opacity 0.15s;
+  }
+
+  .project-link--primary {
+    background: var(--color-accent);
+    color: #fff;
+  }
+
+  .project-link--secondary {
+    background: var(--color-surface);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+  }
+
+  .project-link:hover {
+    opacity: 0.8;
+    text-decoration: none;
+  }
+
+  .post-nav {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .back-link {
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    color: var(--color-muted);
+  }
+
+  .back-link:hover {
+    color: var(--color-accent);
+    text-decoration: underline;
+  }
+</style>

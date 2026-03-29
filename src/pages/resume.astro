@@ -1,0 +1,344 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+interface Job {
+  company: string;
+  title: string;
+  period: string;
+  location: string;
+  bullets: string[];
+}
+
+interface Project {
+  name: string;
+  description: string;
+  url?: string;
+}
+
+interface EducationItem {
+  school: string;
+  degree: string;
+  period: string;
+}
+
+const jobs: Job[] = [
+  {
+    company: 'Acme Corp',
+    title: 'Senior Software Engineer',
+    period: 'Jan 2022 – Present',
+    location: 'Remote',
+    bullets: [
+      'Led architecture and delivery of a customer-facing dashboard serving 50k+ daily active users.',
+      'Reduced API response times by 40% through query optimization and strategic caching.',
+      'Mentored three junior engineers and ran weekly code review sessions.',
+    ],
+  },
+  {
+    company: 'Startup Inc.',
+    title: 'Software Engineer',
+    period: 'Jun 2019 – Dec 2021',
+    location: 'San Francisco, CA',
+    bullets: [
+      'Built and maintained core product features using React, TypeScript, and Node.js.',
+      'Collaborated cross-functionally with design and product to ship two major feature releases.',
+      'Introduced automated testing practices that brought code coverage from 15% to 72%.',
+    ],
+  },
+  {
+    company: 'Agency Co.',
+    title: 'Junior Developer',
+    period: 'Aug 2017 – May 2019',
+    location: 'New York, NY',
+    bullets: [
+      'Developed responsive marketing websites for clients across retail, healthcare, and finance.',
+      'Integrated third-party APIs including Stripe, Salesforce, and various CMS platforms.',
+    ],
+  },
+];
+
+const skills: Record<string, string[]> = {
+  Languages: ['TypeScript', 'JavaScript', 'Python', 'SQL', 'HTML/CSS'],
+  Frameworks: ['React', 'Next.js', 'Astro', 'Node.js', 'Express'],
+  Tools: ['Git', 'Docker', 'PostgreSQL', 'Redis', 'AWS', 'Figma'],
+};
+
+const education: EducationItem[] = [
+  {
+    school: 'State University',
+    degree: 'B.S. Computer Science',
+    period: '2013 – 2017',
+  },
+];
+
+const projects: Project[] = [
+  {
+    name: 'Open Source CLI Tool',
+    description: 'A developer productivity tool with 1,200+ GitHub stars.',
+    url: 'https://github.com/',
+  },
+  {
+    name: 'This Website',
+    description: 'Personal site built with Astro, featuring a blog and portfolio.',
+  },
+];
+---
+
+<BaseLayout title="Resume" description="Professional background, experience, and skills.">
+  <div class="page-container">
+    <header class="resume-header">
+      <div>
+        <h1>Your Name</h1>
+        <p class="resume-tagline">Software Engineer &middot; Remote</p>
+      </div>
+      <div class="resume-contact">
+        <a href="mailto:you@example.com">you@example.com</a>
+        <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://linkedin.com/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      </div>
+    </header>
+
+    <!-- Experience -->
+    <section class="resume-section">
+      <h2 class="section-title">Experience</h2>
+      <div class="job-list">
+        {jobs.map((job) => (
+          <article class="job">
+            <div class="job-header">
+              <div>
+                <h3 class="job-title">{job.title}</h3>
+                <p class="job-company">{job.company} &middot; {job.location}</p>
+              </div>
+              <time class="job-period">{job.period}</time>
+            </div>
+            <ul class="job-bullets">
+              {job.bullets.map((bullet) => <li>{bullet}</li>)}
+            </ul>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section class="resume-section">
+      <h2 class="section-title">Skills</h2>
+      <dl class="skills-grid">
+        {Object.entries(skills).map(([category, items]) => (
+          <>
+            <dt class="skills-category">{category}</dt>
+            <dd class="skills-items">
+              <ul class="tag-list">
+                {items.map((skill) => <li><span class="tag">{skill}</span></li>)}
+              </ul>
+            </dd>
+          </>
+        ))}
+      </dl>
+    </section>
+
+    <!-- Education -->
+    <section class="resume-section">
+      <h2 class="section-title">Education</h2>
+      <div class="education-list">
+        {education.map((item) => (
+          <div class="education-item">
+            <div>
+              <strong>{item.school}</strong>
+              <p class="education-degree">{item.degree}</p>
+            </div>
+            <time class="job-period">{item.period}</time>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Projects -->
+    <section class="resume-section">
+      <h2 class="section-title">Projects</h2>
+      <ul class="project-list">
+        {projects.map((project) => (
+          <li class="project-item">
+            <strong>
+              {project.url
+                ? <a href={project.url} target="_blank" rel="noopener noreferrer">{project.name}</a>
+                : project.name
+              }
+            </strong>
+            {' '}&mdash; {project.description}
+          </li>
+        ))}
+      </ul>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  /* Header */
+  .resume-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .resume-header h1 {
+    margin-bottom: 0.25rem;
+  }
+
+  .resume-tagline {
+    color: var(--color-muted);
+    margin: 0;
+  }
+
+  .resume-contact {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.3rem;
+    font-size: 0.9rem;
+  }
+
+  .resume-contact a {
+    color: var(--color-muted);
+    text-decoration: none;
+  }
+
+  .resume-contact a:hover {
+    color: var(--color-accent);
+    text-decoration: underline;
+  }
+
+  /* Sections */
+  .resume-section {
+    margin-bottom: 2.75rem;
+  }
+
+  .section-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-muted);
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  /* Jobs */
+  .job-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .job-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.75rem;
+  }
+
+  .job-title {
+    font-size: 1.05rem;
+    margin: 0 0 0.2rem;
+  }
+
+  .job-company {
+    font-size: 0.9rem;
+    color: var(--color-muted);
+    margin: 0;
+  }
+
+  .job-period {
+    font-size: 0.825rem;
+    color: var(--color-muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .job-bullets {
+    margin: 0;
+    padding-left: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .job-bullets li {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--color-muted);
+  }
+
+  /* Skills */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.75rem 1.5rem;
+    align-items: start;
+    margin: 0;
+  }
+
+  .skills-category {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text);
+    padding-top: 0.2rem;
+  }
+
+  .skills-items {
+    margin: 0;
+  }
+
+  /* Education */
+  .education-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .education-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .education-degree {
+    font-size: 0.9rem;
+    color: var(--color-muted);
+    margin: 0.2rem 0 0;
+  }
+
+  /* Projects */
+  .project-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding-left: 1.25rem;
+  }
+
+  .project-item {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--color-muted);
+  }
+
+  .project-item strong {
+    color: var(--color-text);
+  }
+
+  @media (max-width: 500px) {
+    .resume-contact {
+      align-items: flex-start;
+    }
+    .skills-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

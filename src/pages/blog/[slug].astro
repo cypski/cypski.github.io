@@ -1,0 +1,50 @@
+---
+import ProseLayout from '../../layouts/ProseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<ProseLayout
+  title={post.data.title}
+  description={post.data.description}
+  pubDate={post.data.pubDate}
+  updatedDate={post.data.updatedDate}
+  tags={post.data.tags}
+  ogType="article"
+>
+  <Content />
+
+  <nav class="post-nav" aria-label="Back to blog">
+    <a href="/blog" class="back-link">&larr; Back to all posts</a>
+  </nav>
+</ProseLayout>
+
+<style>
+  .post-nav {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .back-link {
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    color: var(--color-muted);
+  }
+
+  .back-link:hover {
+    color: var(--color-accent);
+    text-decoration: underline;
+  }
+</style>
