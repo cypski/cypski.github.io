@@ -33,12 +33,12 @@ const formatDate = (date: Date) =>
   </section>
 
   <!-- Recent posts -->
-  <section class="section page-container">
-    <div class="section-header">
-      <h2>Recent Posts</h2>
-      <a href="/blog" class="section-link">All posts &rarr;</a>
-    </div>
-    {recentPosts.length > 0 ? (
+  {recentPosts.length > 0 && (
+    <section class="section page-container">
+      <div class="section-header">
+        <h2>Recent Posts</h2>
+        <a href="/blog" class="section-link">All posts &rarr;</a>
+      </div>
       <ul class="post-list" role="list">
         {recentPosts.map((post) => (
           <li class="post-item">
@@ -52,18 +52,16 @@ const formatDate = (date: Date) =>
           </li>
         ))}
       </ul>
-    ) : (
-      <p class="empty-state">No posts yet — check back soon.</p>
-    )}
-  </section>
+    </section>
+  )}
 
   <!-- Featured work -->
-  <section class="section page-container">
-    <div class="section-header">
-      <h2>Featured Work</h2>
-      <a href="/portfolio" class="section-link">All projects &rarr;</a>
-    </div>
-    {featuredWork.length > 0 ? (
+  {featuredWork.length > 0 && (
+    <section class="section page-container">
+      <div class="section-header">
+        <h2>Featured Work</h2>
+        <a href="/portfolio" class="section-link">All projects &rarr;</a>
+      </div>
       <ul class="card-grid" role="list">
         {featuredWork.map((item) => (
           <li class="card">
@@ -77,19 +75,11 @@ const formatDate = (date: Date) =>
           </li>
         ))}
       </ul>
-    ) : (
-      <p class="empty-state">Portfolio under construction — check back soon.</p>
-    )}
-  </section>
+    </section>
+  )}
 </BaseLayout>
 
 <style>
-  .empty-state {
-    color: var(--color-muted);
-    font-size: 1.05rem;
-    margin: 0;
-  }
-
   /* Hero */
   .hero {
     padding-top: 5rem;

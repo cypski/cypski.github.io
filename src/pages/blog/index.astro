@@ -16,9 +16,7 @@ const formatDate = (date: Date) =>
       <p>Thoughts on international affairs, technology policy, and AI governance.</p>
     </header>
 
-    {posts.length === 0 ? (
-      <p class="empty-state">No posts yet — check back soon.</p>
-    ) : (
+    {posts.length > 0 && (
       <ul class="post-list" role="list">
         {posts.map((post) => (
           <li class="post-item">
