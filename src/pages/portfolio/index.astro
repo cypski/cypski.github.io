@@ -9,59 +9,12 @@ const featured = projects.filter((p) => p.data.featured);
 const others = projects.filter((p) => !p.data.featured);
 ---
 
-<BaseLayout title="Portfolio" description="A selection of projects I've built and shipped.">
+<BaseLayout title="Portfolio" description="Portfolio under construction.">
   <div class="page-container">
     <header class="page-header">
       <h1>Portfolio</h1>
-      <p>A selection of projects I've built and shipped.</p>
+      <p>This section is currently under construction — check back soon.</p>
     </header>
-
-    {projects.length === 0 ? (
-      <p class="empty-state">Projects coming soon.</p>
-    ) : (
-      <>
-        {featured.length > 0 && (
-          <section class="portfolio-section">
-            <h2 class="section-label">Featured</h2>
-            <ul class="card-grid" role="list">
-              {featured.map((item) => (
-                <li class="card card--featured">
-                  <a href={`/portfolio/${item.id}`} class="card-link">
-                    <h3 class="card-title">{item.data.title}</h3>
-                    <p class="card-description">{item.data.description}</p>
-                    <ul class="tag-list" aria-label="Technologies">
-                      {item.data.tags.map((tag) => <li><span class="tag">{tag}</span></li>)}
-                    </ul>
-                    <div class="card-actions">
-                      {item.data.liveUrl && <span class="card-cta">View Project &rarr;</span>}
-                    </div>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
-
-        {others.length > 0 && (
-          <section class="portfolio-section">
-            {featured.length > 0 && <h2 class="section-label">Other Work</h2>}
-            <ul class="card-grid" role="list">
-              {others.map((item) => (
-                <li class="card">
-                  <a href={`/portfolio/${item.id}`} class="card-link">
-                    <h3 class="card-title">{item.data.title}</h3>
-                    <p class="card-description">{item.data.description}</p>
-                    <ul class="tag-list" aria-label="Technologies">
-                      {item.data.tags.map((tag) => <li><span class="tag">{tag}</span></li>)}
-                    </ul>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
-      </>
-    )}
   </div>
 </BaseLayout>
 

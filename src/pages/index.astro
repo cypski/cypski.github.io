@@ -15,30 +15,30 @@ const formatDate = (date: Date) =>
   date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 ---
 
-<BaseLayout title="Home" description="Hi, I'm Casimir Wypyski — a software developer who writes about code, design, and the web.">
+<BaseLayout title="Home" description="Hi, I'm Casimir Wypyski — a graduate student in international affairs and technology policy.">
   <!-- Hero -->
   <section class="hero page-container">
     <div class="hero-inner">
       <p class="hero-eyebrow">Hello, I'm</p>
       <h1>Casimir Wypyski</h1>
       <p class="hero-tagline">
-        Software developer passionate about building well-crafted products. I write about
-        code, design, and lessons learned along the way.
+        Graduate student in international affairs and technology policy. I write about
+        AI governance, security, and the intersection of technology and public policy.
       </p>
       <div class="hero-cta">
-        <a href="/portfolio" class="btn btn-primary">View My Work</a>
+        <a href="/resume" class="btn btn-primary">View My Resume</a>
         <a href="/blog" class="btn btn-secondary">Read the Blog</a>
       </div>
     </div>
   </section>
 
   <!-- Recent posts -->
-  {recentPosts.length > 0 && (
-    <section class="section page-container">
-      <div class="section-header">
-        <h2>Recent Posts</h2>
-        <a href="/blog" class="section-link">All posts &rarr;</a>
-      </div>
+  <section class="section page-container">
+    <div class="section-header">
+      <h2>Recent Posts</h2>
+      <a href="/blog" class="section-link">All posts &rarr;</a>
+    </div>
+    {recentPosts.length > 0 ? (
       <ul class="post-list" role="list">
         {recentPosts.map((post) => (
           <li class="post-item">
@@ -52,16 +52,18 @@ const formatDate = (date: Date) =>
           </li>
         ))}
       </ul>
-    </section>
-  )}
+    ) : (
+      <p class="empty-state">No posts yet — check back soon.</p>
+    )}
+  </section>
 
   <!-- Featured work -->
-  {featuredWork.length > 0 && (
-    <section class="section page-container">
-      <div class="section-header">
-        <h2>Featured Work</h2>
-        <a href="/portfolio" class="section-link">All projects &rarr;</a>
-      </div>
+  <section class="section page-container">
+    <div class="section-header">
+      <h2>Featured Work</h2>
+      <a href="/portfolio" class="section-link">All projects &rarr;</a>
+    </div>
+    {featuredWork.length > 0 ? (
       <ul class="card-grid" role="list">
         {featuredWork.map((item) => (
           <li class="card">
@@ -75,11 +77,19 @@ const formatDate = (date: Date) =>
           </li>
         ))}
       </ul>
-    </section>
-  )}
+    ) : (
+      <p class="empty-state">Portfolio under construction — check back soon.</p>
+    )}
+  </section>
 </BaseLayout>
 
 <style>
+  .empty-state {
+    color: var(--color-muted);
+    font-size: 1.05rem;
+    margin: 0;
+  }
+
   /* Hero */
   .hero {
     padding-top: 5rem;

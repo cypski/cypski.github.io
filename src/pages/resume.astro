@@ -1,117 +1,137 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-interface Job {
-  company: string;
+interface EducationItem {
+  school: string;
+  location: string;
+  degree: string;
+  period: string;
+  detail: string;
+}
+
+interface Publication {
   title: string;
+  role: string;
   period: string;
   location: string;
   bullets: string[];
 }
 
-interface Project {
-  name: string;
-  description: string;
-  url?: string;
-}
-
-interface EducationItem {
-  school: string;
-  degree: string;
-  period: string;
-}
-
-const jobs: Job[] = [
+const education: EducationItem[] = [
   {
-    company: 'Acme Corp',
-    title: 'Senior Software Engineer',
-    period: 'Jan 2022 – Present',
-    location: 'Remote',
+    school: 'The Hertie School',
+    location: 'Berlin, Germany',
+    degree: 'Master of International Affairs',
+    period: 'July 2025 – June 2026',
+    detail: 'Concentration in international security.',
+  },
+  {
+    school: 'Syracuse University',
+    location: 'Syracuse, NY, USA',
+    degree: 'Master of Public Administration',
+    period: 'July 2024 – June 2025',
+    detail: 'Focus on technology policy.',
+  },
+  {
+    school: 'Purdue University',
+    location: 'West Lafayette, IN, USA',
+    degree: 'Bachelor of Arts in Political Science',
+    period: 'August 2020 – May 2024',
+    detail: 'Minor in French with a certificate in public policy.',
+  },
+];
+
+const publications: Publication[] = [
+  {
+    title: '"Artificial Intelligence and Its Use in Combat"',
+    role: 'Co-author',
+    period: 'June 2025',
+    location: 'Syracuse, NY, USA',
     bullets: [
-      'Led architecture and delivery of a customer-facing dashboard serving 50k+ daily active users.',
-      'Reduced API response times by 40% through query optimization and strategic caching.',
-      'Mentored three junior engineers and ran weekly code review sessions.',
+      'Prepared for the benefit of the Dnistrianskyi Centre in Lwów, Ukraine.',
+      'Explores the future ethical and legal implications of artificial intelligence in combat through practical examples from the Russo-Ukrainian war and translates technical concepts for diverse audiences.',
     ],
   },
   {
-    company: 'Startup Inc.',
-    title: 'Software Engineer',
-    period: 'Jun 2019 – Dec 2021',
-    location: 'San Francisco, CA',
+    title: '"Term Frequency and Sentiment in AI Standards"',
+    role: 'Author',
+    period: 'May 2025',
+    location: 'Syracuse, NY, USA',
     bullets: [
-      'Built and maintained core product features using React, TypeScript, and Node.js.',
-      'Collaborated cross-functionally with design and product to ship two major feature releases.',
-      'Introduced automated testing practices that brought code coverage from 15% to 72%.',
+      'Considers 30 externally available AI standards frameworks published by three distinct organisation types.',
+      'Contrasts frameworks by examining term frequency and phrase sentiment scores, revealing nuanced similarities and differences in the processed frameworks.',
     ],
   },
   {
-    company: 'Agency Co.',
-    title: 'Junior Developer',
-    period: 'Aug 2017 – May 2019',
-    location: 'New York, NY',
+    title: '"Polarization of Electric Vehicles in Partisan News"',
+    role: 'Co-author',
+    period: 'May 2024',
+    location: 'West Lafayette, IN, USA',
     bullets: [
-      'Developed responsive marketing websites for clients across retail, healthcare, and finance.',
-      'Integrated third-party APIs including Stripe, Salesforce, and various CMS platforms.',
+      'Published in the 17th volume of the Pepperdine Policy Review.',
+      'Findings demonstrate a differential treatment of electric vehicles across the aisle.',
     ],
   },
 ];
 
 const skills: Record<string, string[]> = {
-  Languages: ['TypeScript', 'JavaScript', 'Python', 'SQL', 'HTML/CSS'],
-  Frameworks: ['React', 'Next.js', 'Astro', 'Node.js', 'Express'],
-  Tools: ['Git', 'Docker', 'PostgreSQL', 'Redis', 'AWS', 'Figma'],
+  Certificates: [
+    'DataCamp: Data Scientist in Python',
+    'Wharton School Online: Artificial Intelligence for Business',
+    'Lund University: Artificial Intelligence and Law (MOOC)',
+  ],
+  Data: ['Python', 'SQL', 'Visual Studio Code', 'GitHub (Git)', 'QGIS', 'STATA', 'Zotero', 'Qualtrics', 'Tableau'],
+  Media: ['Microsoft Office Suite', 'Adobe InDesign', 'Adobe Photoshop', 'Adobe Premiere', 'Canva', 'WordPress'],
+  Languages: ['English (native)', 'French (C1)', 'German (B1)'],
 };
-
-const education: EducationItem[] = [
-  {
-    school: 'State University',
-    degree: 'B.S. Computer Science',
-    period: '2013 – 2017',
-  },
-];
-
-const projects: Project[] = [
-  {
-    name: 'Open Source CLI Tool',
-    description: 'A developer productivity tool with 1,200+ GitHub stars.',
-    url: 'https://github.com/',
-  },
-  {
-    name: 'This Website',
-    description: 'Personal site built with Astro, featuring a blog and portfolio.',
-  },
-];
 ---
 
-<BaseLayout title="Resume" description="Professional background, experience, and skills.">
+<BaseLayout title="Resume" description="Education, publications, and skills.">
   <div class="page-container">
     <header class="resume-header">
       <div>
         <h1>Casimir Wypyski</h1>
-        <p class="resume-tagline">Software Engineer &middot; Remote</p>
-      </div>
-      <div class="resume-contact">
-        <a href="mailto:you@example.com">you@example.com</a>
-        <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a>
-        <a href="https://linkedin.com/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <p class="resume-tagline">International Affairs &middot; Technology Policy</p>
       </div>
     </header>
 
-    <!-- Experience -->
+    <!-- Education -->
     <section class="resume-section">
-      <h2 class="section-title">Experience</h2>
+      <h2 class="section-title">Education</h2>
+      <div class="education-list">
+        {education.map((item) => (
+          <article class="education-item">
+            <div class="education-main">
+              <div>
+                <strong>{item.school}</strong>
+                <p class="education-degree">{item.degree}</p>
+                <p class="education-detail">{item.detail}</p>
+              </div>
+              <div class="education-meta">
+                <time class="job-period">{item.period}</time>
+                <span class="job-period">{item.location}</span>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <!-- Publications -->
+    <section class="resume-section">
+      <h2 class="section-title">Publications</h2>
       <div class="job-list">
-        {jobs.map((job) => (
+        {publications.map((pub) => (
           <article class="job">
             <div class="job-header">
               <div>
-                <h3 class="job-title">{job.title}</h3>
-                <p class="job-company">{job.company} &middot; {job.location}</p>
+                <h3 class="job-title">{pub.title}</h3>
+                <p class="job-company">{pub.role} &middot; {pub.location}</p>
               </div>
-              <time class="job-period">{job.period}</time>
+              <time class="job-period">{pub.period}</time>
             </div>
             <ul class="job-bullets">
-              {job.bullets.map((bullet) => <li>{bullet}</li>)}
+              {pub.bullets.map((bullet) => <li>{bullet}</li>)}
             </ul>
           </article>
         ))}
@@ -133,40 +153,6 @@ const projects: Project[] = [
           </>
         ))}
       </dl>
-    </section>
-
-    <!-- Education -->
-    <section class="resume-section">
-      <h2 class="section-title">Education</h2>
-      <div class="education-list">
-        {education.map((item) => (
-          <div class="education-item">
-            <div>
-              <strong>{item.school}</strong>
-              <p class="education-degree">{item.degree}</p>
-            </div>
-            <time class="job-period">{item.period}</time>
-          </div>
-        ))}
-      </div>
-    </section>
-
-    <!-- Projects -->
-    <section class="resume-section">
-      <h2 class="section-title">Projects</h2>
-      <ul class="project-list">
-        {projects.map((project) => (
-          <li class="project-item">
-            <strong>
-              {project.url
-                ? <a href={project.url} target="_blank" rel="noopener noreferrer">{project.name}</a>
-                : project.name
-              }
-            </strong>
-            {' '}&mdash; {project.description}
-          </li>
-        ))}
-      </ul>
     </section>
   </div>
 </BaseLayout>
@@ -191,24 +177,6 @@ const projects: Project[] = [
   .resume-tagline {
     color: var(--color-muted);
     margin: 0;
-  }
-
-  .resume-contact {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 0.3rem;
-    font-size: 0.9rem;
-  }
-
-  .resume-contact a {
-    color: var(--color-muted);
-    text-decoration: none;
-  }
-
-  .resume-contact a:hover {
-    color: var(--color-accent);
-    text-decoration: underline;
   }
 
   /* Sections */
@@ -299,14 +267,23 @@ const projects: Project[] = [
   .education-list {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.5rem;
   }
 
-  .education-item {
+  .education-main {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .education-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.2rem;
+    flex-shrink: 0;
   }
 
   .education-degree {
@@ -315,22 +292,11 @@ const projects: Project[] = [
     margin: 0.2rem 0 0;
   }
 
-  /* Projects */
-  .project-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-    padding-left: 1.25rem;
-  }
-
-  .project-item {
-    font-size: 0.95rem;
-    line-height: 1.6;
+  .education-detail {
+    font-size: 0.875rem;
     color: var(--color-muted);
-  }
-
-  .project-item strong {
-    color: var(--color-text);
+    margin: 0.2rem 0 0;
+    font-style: italic;
   }
 
   @media (max-width: 500px) {
