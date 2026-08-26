@@ -70,6 +70,7 @@ export const cvSections: Section[] = [
         subheading: 'Co-author',
         period: 'July 2026',
         meta: 'Berlin, DE',
+        link: 'https://www.lesswrong.com/posts/B5HANRTfbJeRBfBFa/ai-amplified-democratic-backsliding-an-exploration',
       },
       {
         heading: '“Trading Up: How R&D Investment Amplifies Trade-Driven AI Diffusion in the EU”',
@@ -94,6 +95,7 @@ export const cvSections: Section[] = [
         subheading: 'Co-author',
         period: 'May 2024',
         meta: 'West Lafayette, IN, USA',
+        link: 'https://digitalcommons.pepperdine.edu/ppr/vol17/iss1/7/'
       },
     ],
   },
