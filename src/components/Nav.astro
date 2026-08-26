@@ -1,0 +1,211 @@
+---
+const tabs = [
+  { view: 'blog', href: '/blog', label: 'Blog' },
+  { view: 'cv', href: '/cv', label: 'CV' },
+  { view: 'reading', href: '/reading', label: 'Reading list' },
+];
+---
+
+<nav class="site-nav" data-site-nav aria-label="Primary" transition:persist>
+  <ul class="nav-list">
+    {tabs.map((t) => (
+      <li>
+        <a class="tag-link" href={t.href} data-tag data-view={t.view}>{t.label}</a>
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<style>
+  .site-nav {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    pointer-events: none;
+  }
+
+  /* Frosted top bar — only visible once a section is open */
+  .site-nav::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: var(--nav-h);
+    background: color-mix(in srgb, var(--bg) 80%, transparent);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    transition: opacity var(--dur) var(--ease);
+  }
+  :global(html:not([data-view='home'])) .site-nav::before { opacity: 1; }
+
+  .nav-list {
+    pointer-events: auto;
+    display: flex;
+    align-items: baseline;
+    gap: clamp(1rem, 4vw, 2.5rem);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    /* Floated (a section is open): the tags rest just below the top edge. */
+    transform: translateY(1.6rem);
+    transition: transform var(--dur) var(--ease);
+    will-change: transform;
+  }
+
+  /* Home: the tags sit centred in the viewport. Only the Y position changes —
+     the text itself stays exactly the same size in both states (no shrink). */
+  :global(html[data-view='home']) .nav-list {
+    transform: translateY(calc(50svh - 50%));
+  }
+
+  .tag-link {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    font-size: clamp(1.15rem, 4.2vw, 1.9rem);
+    line-height: 1;
+    color: var(--text-strong);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.3s var(--ease), opacity 0.3s ease;
+  }
+  .tag-link:hover { color: var(--text-strong); text-decoration: none; }
+
+  /* The two non-selected tags fade to grey; the active one stays solid. */
+  .tag-link.is-dim { color: var(--faint); }
+  .tag-link.is-dim:hover { color: var(--muted); }
+  .tag-link.is-active {
+    color: var(--text-strong);
+    text-underline-offset: 7px;
+    text-decoration-thickness: 1.5px;
+    text-decoration: underline;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav-list, .tag-link, .site-nav::before { transition-duration: 0.001s; }
+  }
+</style>
+
+<script>
+  import { navigate } from 'astro:transitions/client';
+
+  const DIM = 240;   // let the grey settle before floating up (home → section)
+  const PAUSE = 350; // hold at centre ("switching papers")
+  const DUR = 600;   // MUST match --dur (float duration)
+
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
+  const root = () => document.documentElement;
+  const mainEl = () => document.getElementById('main-content');
+
+  let busy = false;
+  let choreographing = false;
+
+  function paint(view: string | undefined) {
+    document.querySelectorAll<HTMLAnchorElement>('[data-tag]').forEach((l) => {
+      const v = l.dataset.view;
+      const home = !view || view === 'home';
+      const active = v === view;
+      l.classList.toggle('is-active', active && !home);
+      l.classList.toggle('is-dim', !home && !active);
+      if (active && !home) l.setAttribute('aria-current', 'page');
+      else l.removeAttribute('aria-current');
+    });
+  }
+
+  const hide = (el: HTMLElement | null) => { if (el) el.style.opacity = '0'; };
+  function reveal() {
+    const m = mainEl();
+    if (m) requestAnimationFrame(() => { m.style.opacity = '1'; });
+  }
+
+  // Swap page content via the router; resolves once the new DOM is in place.
+  // The incoming <main> is pre-hidden in astro:before-swap, so nothing shows
+  // until we choose to reveal it.
+  function swap(href: string) {
+    return new Promise<void>((resolve) => {
+      document.addEventListener('astro:after-swap', () => resolve(), { once: true });
+      navigate(href);
+    });
+  }
+
+  async function go(view: string, href: string) {
+    if (busy) return;
+    if (reduce) return void navigate(href);
+
+    const cur = root().dataset.view;
+    busy = true;
+    choreographing = true;
+
+    if (view === cur) {
+      // Clicking the open tab closes back to the neutral home screen.
+      // Text fades out in parallel with the tags floating down.
+      paint('home');
+      hide(mainEl());
+      root().dataset.view = 'home';
+      const p = swap('/');
+      await wait(DUR);
+      await p;
+      reveal();
+    } else if (cur === 'home' || !cur) {
+      // Opening from home: grey the others, pause, then float up + reveal.
+      paint(view);
+      await wait(DIM);
+      root().dataset.view = view;   // tags float up
+      const p = swap(href);
+      await wait(DUR);              // wait until the tags reach the top
+      await p;
+      reveal();                     // only now does the new text fade in
+    } else {
+      // Section → section ("switching papers").
+      paint(view);
+      hide(mainEl());               // 1. underlying text fades OUT ...
+      root().dataset.view = 'home'; //    ... in parallel with tags floating down
+      await wait(DUR);
+      await wait(PAUSE);           // 2. hold at centre
+      root().dataset.view = view;   // 3. tags float back up
+      const p = swap(href);         //    (new content swapped in, still hidden)
+      await wait(DUR);             // 4. wait until tags clear the runway
+      await p;
+      reveal();                     // 5. now the new text fades in
+    }
+
+    choreographing = false;
+    busy = false;
+  }
+
+  function bind() {
+    document.querySelectorAll<HTMLAnchorElement>('[data-tag]').forEach((l) => {
+      if (l.dataset.bound) return;
+      l.dataset.bound = '1';
+      l.addEventListener('click', (e) => {
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+        e.preventDefault();
+        go(l.dataset.view!, l.getAttribute('href')!);
+      });
+    });
+  }
+
+  // Every incoming page starts hidden so WE decide when its text appears.
+  function onBeforeSwap(e: any) {
+    const m = e.newDocument.getElementById('main-content');
+    if (m) m.style.opacity = '0';
+  }
+
+  function onPageLoad() {
+    bind();
+    paint(root().dataset.view);
+    if (!choreographing) reveal(); // direct load / back-forward navigation
+  }
+
+  bind();
+  paint(root().dataset.view);
+  if (!(window as any).__navBound) {
+    (window as any).__navBound = true;
+    document.addEventListener('astro:before-swap', onBeforeSwap);
+    document.addEventListener('astro:page-load', onPageLoad);
+  }
+</script>

@@ -1,0 +1,146 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { cvHeader, cvSections } from '../data/cv';
+---
+
+<BaseLayout title="CV" view="cv" description="Education, publications, and skills of Casimir Wypyski.">
+  <div class="container container-reading section">
+    <header class="cv-head">
+      <p class="eyebrow">Curriculum vitae</p>
+      <h1>{cvHeader.name}</h1>
+      <p class="cv-tagline">{cvHeader.tagline}</p>
+    </header>
+
+    {cvSections.map((section) => (
+      <section class="cv-section">
+        <h2 class="cv-section-title">{section.title}</h2>
+
+        {section.type === 'entries' && (
+          <div class="entry-list">
+            {section.entries.map((e) => (
+              <article class="entry">
+                <div class="entry-top">
+                  <div>
+                    <h3 class="entry-heading">{e.heading}</h3>
+                    {e.subheading && <p class="entry-sub">{e.subheading}</p>}
+                    {e.note && <p class="entry-note">{e.note}</p>}
+                  </div>
+                  {(e.period || e.meta) && (
+                    <div class="entry-meta">
+                      {e.period && <span class="mono">{e.period}</span>}
+                      {e.meta && <span class="mono faint">{e.meta}</span>}
+                    </div>
+                  )}
+                </div>
+                {e.bullets && e.bullets.length > 0 && (
+                  <ul class="entry-bullets">
+                    {e.bullets.map((b) => <li>{b}</li>)}
+                  </ul>
+                )}
+              </article>
+            ))}
+          </div>
+        )}
+
+        {section.type === 'skills' && (
+          <dl class="skills-grid">
+            {section.groups.map((g) => (
+              <>
+                <dt>{g.category}</dt>
+                <dd>
+                  <ul class="tag-list">
+                    {g.items.map((item) => <li><span class="tag">{item}</span></li>)}
+                  </ul>
+                </dd>
+              </>
+            ))}
+          </dl>
+        )}
+      </section>
+    ))}
+  </div>
+</BaseLayout>
+
+<style>
+  .cv-head {
+    margin-bottom: clamp(2rem, 5vw, 3rem);
+    padding-bottom: 1.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .cv-head h1 { margin: 0 0 0.35rem; }
+  .cv-tagline {
+    margin: 0;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+  }
+
+  .cv-section { margin-bottom: clamp(2.25rem, 5vw, 3rem); }
+
+  .cv-section-title {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin: 0 0 1.5rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .entry-list { display: flex; flex-direction: column; gap: 1.9rem; }
+
+  .entry-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .entry-heading { margin: 0; font-size: 1.05rem; }
+  .entry-sub { margin: 0.15rem 0 0; color: var(--muted); font-size: 0.92rem; }
+  .entry-note { margin: 0.3rem 0 0; color: var(--muted); font-style: italic; font-size: 0.88rem; }
+
+  .entry-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.15rem;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .mono { font-family: var(--font-mono); font-size: 0.78rem; color: var(--muted); white-space: nowrap; }
+  .mono.faint { color: var(--faint); }
+
+  .entry-bullets {
+    margin: 0.85rem 0 0;
+    padding-left: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .entry-bullets li { color: var(--muted); font-size: 0.95rem; line-height: 1.6; }
+  .entry-bullets li::marker { color: var(--faint); }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: minmax(6rem, auto) 1fr;
+    gap: 1rem 1.75rem;
+    margin: 0;
+    align-items: start;
+  }
+  .skills-grid dt {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--text-strong);
+    padding-top: 0.3rem;
+  }
+  .skills-grid dd { margin: 0; }
+
+  @media (max-width: 560px) {
+    .entry-meta { align-items: flex-start; text-align: left; }
+    .skills-grid { grid-template-columns: 1fr; gap: 0.5rem 0; }
+    .skills-grid dt { padding-top: 1rem; }
+  }
+</style>

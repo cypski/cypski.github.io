@@ -1,25 +1,29 @@
 ---
-import Navigation from '../components/Navigation.astro';
+import { ClientRouter } from 'astro:transitions';
+import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 
 interface Props {
   title: string;
   description?: string;
+  /** Which nav tab this page corresponds to. 'home' = neutral centered state. */
+  view: 'home' | 'blog' | 'cv' | 'reading';
   ogType?: 'website' | 'article';
 }
 
 const {
   title,
-  description = 'Personal website — blog, portfolio, and resume.',
+  description = 'Personal site of Casimir Wypyski — writing on AI governance, security, and technology policy.',
+  view,
   ogType = 'website',
 } = Astro.props;
 
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'https://example.com');
-const fullTitle = title === 'Home' ? 'Casimir Wypyski' : `${title} | Casimir Wypyski`;
+const fullTitle = title === 'Home' ? 'Casimir Wypyski' : `${title} · Casimir Wypyski`;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-view={view}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -27,6 +31,8 @@ const fullTitle = title === 'Home' ? 'Casimir Wypyski' : `${title} | Casimir Wyp
 
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0a0a0b" media="(prefers-color-scheme: dark)" />
     <link rel="canonical" href={canonicalUrl} />
 
     <!-- Open Graph -->
@@ -36,44 +42,93 @@ const fullTitle = title === 'Home' ? 'Casimir Wypyski' : `${title} | Casimir Wyp
     <meta property="og:url" content={canonicalUrl} />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- No-flash theme init: light-first, respects saved choice -->
+    <script is:inline>
+      (() => {
+        const saved = localStorage.getItem('theme');
+        document.documentElement.dataset.theme = saved ?? 'light';
+      })();
+    </script>
+
+    <ClientRouter />
   </head>
   <body>
-    <Navigation />
+    <a href="#main-content" class="skip-link">Skip to content</a>
+
+    <Nav />
+
     <main id="main-content">
       <slot />
     </main>
+
     <Footer />
   </body>
 </html>
 
 <style is:global>
   /* ── Design tokens ─────────────────────────────────────── */
-  :root {
-    --color-bg:      #ffffff;
-    --color-surface: #f5f5f5;
-    --color-border:  #e5e5e5;
-    --color-text:    #111111;
-    --color-muted:   #666666;
-    --color-accent:  #2563eb;
+  :root,
+  :root[data-theme='light'] {
+    color-scheme: light;
 
-    --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-      Helvetica, Arial, sans-serif;
-    --font-mono: 'SF Mono', 'Fira Code', 'Cascadia Code', Menlo, monospace;
+    --bg:          #ffffff;
+    --bg-elevated: #ffffff;
+    --surface:     #f6f6f4;
+    --surface-2:   #eeeeeb;
+    --border:      #e6e6e1;
+    --border-strong: #d6d6cf;
 
-    --radius: 8px;
-    --shadow-sm: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
-    --shadow-md: 0 4px 12px rgba(0,0,0,.08), 0 2px 4px rgba(0,0,0,.04);
+    --text:        #14141a;
+    --text-strong: #000000;
+    --muted:       #6a6a72;
+    --faint:       #a7a7ad;
+
+    --accent:      #2b4de0;
+    --accent-soft: rgba(43, 77, 224, 0.08);
   }
 
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --color-bg:      #0f0f0f;
-      --color-surface: #1a1a1a;
-      --color-border:  #2a2a2a;
-      --color-text:    #eeeeee;
-      --color-muted:   #888888;
-      --color-accent:  #60a5fa;
-    }
+  :root[data-theme='dark'] {
+    color-scheme: dark;
+
+    --bg:          #0a0a0b;
+    --bg-elevated: #101013;
+    --surface:     #16161a;
+    --surface-2:   #1d1d22;
+    --border:      #26262d;
+    --border-strong: #34343d;
+
+    --text:        #e9e9ee;
+    --text-strong: #ffffff;
+    --muted:       #9a9aa4;
+    --faint:       #5f5f68;
+
+    --accent:      #8fb0ff;
+    --accent-soft: rgba(143, 176, 255, 0.12);
+  }
+
+  :root {
+    --font-display: Helvetica, 'Helvetica Neue', Arial, sans-serif;
+    --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+
+    --content: 700px;
+    --wide: 940px;
+
+    --radius: 12px;
+    --radius-sm: 8px;
+
+    --nav-h: 5.25rem;
+    --ease: cubic-bezier(0.65, 0.05, 0.36, 1);
+    --dur: 0.6s;
   }
 
   /* ── Reset ─────────────────────────────────────────────── */
@@ -82,105 +137,150 @@ const fullTitle = title === 'Home' ? 'Casimir Wypyski' : `${title} | Casimir Wyp
   html {
     font-family: var(--font-sans);
     font-size: 16px;
-    line-height: 1.6;
+    line-height: 1.65;
     -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
     scroll-behavior: smooth;
   }
 
   body {
     margin: 0;
-    background-color: var(--color-bg);
-    color: var(--color-text);
-    min-height: 100dvh;
+    background-color: var(--bg);
+    color: var(--text);
+    min-height: 100svh;
     display: flex;
     flex-direction: column;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   #main-content {
-    flex: 1;
+    flex: 1 0 auto;
+    transition: padding-top var(--dur) var(--ease), opacity 0.28s ease;
   }
+
+  /* On subpages, leave room for the floated top nav. On home, no offset.
+     The transition keeps the brief "dip" (data-view→home) from jumping. */
+  :root:not([data-view='home']) #main-content { padding-top: var(--nav-h); }
+
+  /* We choreograph content fades ourselves (see Nav.astro), so switch off the
+     router's built-in cross-fade — swaps are instant; opacity does the work. */
+  ::view-transition-old(root),
+  ::view-transition-new(root) { animation: none; }
+
+  .skip-link {
+    position: absolute;
+    left: -9999px; top: 0; z-index: 200;
+    background: var(--text-strong);
+    color: var(--bg);
+    padding: 0.6rem 1rem;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+  }
+  .skip-link:focus { left: 1rem; top: 1rem; }
+
+  ::selection { background: var(--accent-soft); color: var(--text-strong); }
+
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
 
   /* ── Typography ────────────────────────────────────────── */
   h1, h2, h3, h4, h5, h6 {
-    line-height: 1.25;
-    letter-spacing: -0.02em;
+    font-family: var(--font-display);
+    line-height: 1.15;
+    letter-spacing: -0.025em;
     margin-top: 0;
-    font-weight: 700;
+    font-weight: 600;
+    color: var(--text-strong);
   }
-
-  h1 { font-size: clamp(1.75rem, 4vw, 2.5rem); }
-  h2 { font-size: clamp(1.35rem, 3vw, 1.75rem); }
-  h3 { font-size: 1.25rem; }
+  h1 { font-size: clamp(2rem, 5vw, 2.75rem); }
+  h2 { font-size: clamp(1.3rem, 3vw, 1.55rem); }
+  h3 { font-size: 1.1rem; }
 
   p { margin-top: 0; }
 
-  a { color: var(--color-accent); }
-  a:hover { text-decoration: underline; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+  strong { color: var(--text-strong); font-weight: 600; }
 
   code {
     font-family: var(--font-mono);
-    font-size: 0.875em;
-    background: var(--color-surface);
-    padding: 0.15em 0.4em;
-    border-radius: 4px;
+    font-size: 0.85em;
+    background: var(--surface-2);
+    padding: 0.14em 0.4em;
+    border-radius: 5px;
   }
 
   pre {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: 1.25rem 1.5rem;
+    padding: 1.2rem 1.4rem;
     overflow-x: auto;
     font-family: var(--font-mono);
-    font-size: 0.875rem;
+    font-size: 0.85rem;
     line-height: 1.7;
   }
-
-  pre code {
-    background: none;
-    padding: 0;
-    font-size: inherit;
-  }
+  pre code { background: none; padding: 0; }
 
   img { max-width: 100%; height: auto; display: block; }
 
-  /* ── Shared layout utility ─────────────────────────────── */
-  .page-container {
-    max-width: 900px;
+  hr { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+
+  /* ── Layout utilities ──────────────────────────────────── */
+  .container {
+    max-width: var(--wide);
     margin: 0 auto;
-    padding: 3rem 1.5rem;
+    padding-inline: clamp(1.25rem, 5vw, 2rem);
+  }
+  .container-reading { max-width: var(--content); }
+
+  .section { padding-block: clamp(2.25rem, 5vw, 3.5rem); }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin: 0 0 0.85rem;
+  }
+  .eyebrow::before {
+    content: '';
+    width: 1.6rem; height: 1px;
+    background: var(--border-strong);
   }
 
-  .page-header {
-    margin-bottom: 3rem;
-  }
-
-  .page-header p {
-    font-size: 1.125rem;
-    color: var(--color-muted);
-    margin-top: 0.5rem;
+  .page-head { margin-bottom: clamp(2rem, 5vw, 3rem); }
+  .page-head h1 { margin: 0 0 0.6rem; }
+  .page-head .lede {
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 60ch;
+    margin: 0;
   }
 
   .tag {
     display: inline-block;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding: 0.2em 0.6em;
-    border-radius: 4px;
-    background: var(--color-surface);
-    color: var(--color-muted);
-    border: 1px solid var(--color-border);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.02em;
+    padding: 0.24em 0.6em;
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--muted);
+    border: 1px solid var(--border);
     text-decoration: none;
   }
-
   .tag-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    list-style: none;
-    margin: 0;
-    padding: 0;
+    display: flex; flex-wrap: wrap; gap: 0.4rem;
+    list-style: none; margin: 0; padding: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
   }
 </style>
