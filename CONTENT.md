@@ -103,6 +103,7 @@ copy an existing `{ ... }` block inside that section's `entries` and edit it:
     'A point about the work.',
     'Another point.',
   ],
+  link: 'https://example.com/the-paper',         // optional: makes the heading a clickable link (opens in a new tab)
 },
 ```
 

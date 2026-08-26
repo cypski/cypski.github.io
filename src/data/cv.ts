@@ -20,6 +20,8 @@ export interface Entry {
   note?: string;
   /** Optional bullet points. */
   bullets?: string[];
+  /** Optional URL — turns the heading into a link to the work (opens in a new tab). */
+  link?: string;
 }
 
 export type Section =
