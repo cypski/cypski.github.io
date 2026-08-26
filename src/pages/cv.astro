@@ -91,15 +91,16 @@ import { cvHeader, cvSections } from '../data/cv';
 
   .entry-list { display: flex; flex-direction: column; gap: 1.9rem; }
 
+  /* No flex-wrap: keep the title and date on one row so the title column
+     shrinks and wraps its text, instead of the date dropping to a new line.
+     Stacks vertically only on narrow screens (media query below). */
   .entry-top {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
     gap: 1.5rem;
-    flex-wrap: wrap;
   }
-  /* Let the title column shrink so a long heading wraps instead of
-     shoving the date/location block onto the next line. */
+  /* Let the title column shrink so a long heading wraps. */
   .entry-lead { flex: 1 1 auto; min-width: 0; }
 
   .entry-heading { margin: 0; font-size: 1.05rem; overflow-wrap: break-word; }
@@ -143,6 +144,7 @@ import { cvHeader, cvSections } from '../data/cv';
   .skills-grid dd { margin: 0; }
 
   @media (max-width: 560px) {
+    .entry-top { flex-direction: column; gap: 0.4rem; }
     .entry-meta { align-items: flex-start; text-align: left; }
     .skills-grid { grid-template-columns: 1fr; gap: 0.5rem 0; }
     .skills-grid dt { padding-top: 1rem; }
