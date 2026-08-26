@@ -20,7 +20,7 @@ import { cvHeader, cvSections } from '../data/cv';
             {section.entries.map((e) => (
               <article class="entry">
                 <div class="entry-top">
-                  <div>
+                  <div class="entry-lead">
                     <h3 class="entry-heading">{e.heading}</h3>
                     {e.subheading && <p class="entry-sub">{e.subheading}</p>}
                     {e.note && <p class="entry-note">{e.note}</p>}
@@ -98,7 +98,11 @@ import { cvHeader, cvSections } from '../data/cv';
     gap: 1.5rem;
     flex-wrap: wrap;
   }
-  .entry-heading { margin: 0; font-size: 1.05rem; }
+  /* Let the title column shrink so a long heading wraps instead of
+     shoving the date/location block onto the next line. */
+  .entry-lead { flex: 1 1 auto; min-width: 0; }
+
+  .entry-heading { margin: 0; font-size: 1.05rem; overflow-wrap: break-word; }
   .entry-sub { margin: 0.15rem 0 0; color: var(--muted); font-size: 0.92rem; }
   .entry-note { margin: 0.3rem 0 0; color: var(--muted); font-style: italic; font-size: 0.88rem; }
 
