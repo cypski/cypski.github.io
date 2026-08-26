@@ -28,7 +28,7 @@ export type Section =
 
 export const cvHeader = {
   name: 'Casimir Wypyski',
-  tagline: 'International Affairs · Technology Policy',
+  tagline: 'Geoeconomics · AI Policy',
 };
 
 export const cvSections: Section[] = [
@@ -68,30 +68,18 @@ export const cvSections: Section[] = [
         subheading: 'Co-author',
         period: 'June 2025',
         meta: 'Syracuse, NY, USA',
-        bullets: [
-          'Prepared for the benefit of the Dnistrianskyi Centre in Lwów, Ukraine.',
-          'Explores the future ethical and legal implications of artificial intelligence in combat through practical examples from the Russo-Ukrainian war and translates technical concepts for diverse audiences.',
-        ],
       },
       {
-        heading: '“Term Frequency and Sentiment in AI Standards”',
+        heading: '“Term Frequency and Sentiment in AI Standards Frameworks”',
         subheading: 'Author',
         period: 'May 2025',
         meta: 'Syracuse, NY, USA',
-        bullets: [
-          'Considers 30 externally available AI standards frameworks published by three distinct organisation types.',
-          'Contrasts frameworks by examining term frequency and phrase sentiment scores, revealing nuanced similarities and differences in the processed frameworks.',
-        ],
       },
       {
         heading: '“Polarization of Electric Vehicles in Partisan News”',
         subheading: 'Co-author',
         period: 'May 2024',
         meta: 'West Lafayette, IN, USA',
-        bullets: [
-          'Published in the 17th volume of the Pepperdine Policy Review.',
-          'Findings demonstrate a differential treatment of electric vehicles across the aisle.',
-        ],
       },
     ],
   },
