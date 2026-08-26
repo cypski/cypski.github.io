@@ -1,0 +1,124 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { books } from '../data/reading';
+
+const finished = books.filter((b) => b.finished);
+const reading = books.filter((b) => !b.finished);
+---
+
+<BaseLayout title="Reading list" view="reading" description="Books Casimir Wypyski is reading and has read.">
+  <div class="container container-reading section">
+    <header class="page-head">
+      <p class="eyebrow">Reading list</p>
+      <h1>Books</h1>
+      <p class="lede">What I'm reading and what I've finished. Titles link out to a summary where one exists.</p>
+    </header>
+
+    {reading.length > 0 && (
+      <section class="reading-block">
+        <h2 class="block-label">Currently reading</h2>
+        <ul class="book-list" role="list">
+          {reading.map((b) => (
+            <li class="book book--reading">
+              <span class="book-marker" aria-hidden="true"></span>
+              <span class="book-main">
+                {b.link
+                  ? <a class="book-title" href={b.link} target="_blank" rel="noopener noreferrer">{b.title}</a>
+                  : <span class="book-title">{b.title}</span>}
+                <span class="book-author">{b.author}</span>
+              </span>
+              <span class="book-status">reading</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    {finished.length > 0 && (
+      <section class="reading-block">
+        <h2 class="block-label">Read</h2>
+        <ul class="book-list" role="list">
+          {finished.map((b) => (
+            <li class="book">
+              <span class="book-marker" aria-hidden="true"></span>
+              <span class="book-main">
+                {b.link
+                  ? <a class="book-title" href={b.link} target="_blank" rel="noopener noreferrer">{b.title}</a>
+                  : <span class="book-title">{b.title}</span>}
+                <span class="book-author">{b.author}</span>
+              </span>
+              <span class="book-status">read</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    {books.length === 0 && <p class="lede">Nothing here yet — check back soon.</p>}
+  </div>
+</BaseLayout>
+
+<style>
+  .reading-block { margin-bottom: 2.5rem; }
+
+  .block-label {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin: 0 0 1rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .book-list { list-style: none; margin: 0; padding: 0; }
+
+  .book {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: baseline;
+    gap: 0.9rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .book-marker {
+    width: 7px; height: 7px;
+    border-radius: 999px;
+    border: 1.5px solid var(--faint);
+    transform: translateY(-1px);
+  }
+  .book--reading .book-marker { background: var(--accent); border-color: var(--accent); }
+
+  .book-main { display: flex; flex-direction: column; gap: 0.1rem; min-width: 0; }
+
+  .book-title {
+    font-family: var(--font-display);
+    font-size: 1.02rem;
+    font-weight: 600;
+    color: var(--text-strong);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+  }
+  a.book-title:hover { color: var(--accent); text-decoration: none; }
+  a.book-title::after { content: ' ↗'; font-size: 0.75em; color: var(--muted); }
+
+  .book-author { color: var(--muted); font-size: 0.9rem; }
+
+  .book-status {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--faint);
+    white-space: nowrap;
+  }
+  .book--reading .book-status { color: var(--accent); }
+
+  @media (max-width: 480px) {
+    .book { grid-template-columns: auto 1fr; }
+    .book-status { display: none; }
+  }
+</style>
