@@ -3,7 +3,7 @@ title: "A New Home on the Web"
 description: "Rebuilding this site around a single idea: three doors, and nothing in the way."
 pubDate: 2026-08-26
 tags: ["meta", "design"]
-draft: false
+draft: true
 ---
 
 This is the first post on the redesigned site. The whole thing is built around one
