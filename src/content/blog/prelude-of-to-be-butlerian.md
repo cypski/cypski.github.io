@@ -6,6 +6,8 @@ tags: ["artificial intelligence", "scenario", "philosophy"]
 draft: false
 ---
 
+*Please note that this post explores a hypothetical scenario. It should not be treated as advocating for any particular future, but rather as a stress-test of current social/economic policies and a philosophical thought experiment.*
+
 To preface, I first want to mention that I've not read past the original Dune (1984), at least not cover-to-cover, nor have I read the books comprising the expanded universe by Brian Herbert and Kevin J. Anderson. I like the world a lot, but I'm by no means an expert. 
 
 This shouldn't matter for our purposes, however. The basis for this post follows the Butlerian Jihad as it's described in the original hexalogy. This version of the war is not described as a particularly 'hot' war, but rather as a continuous struggle of the common man against other men that control machines. The result is a comprehensive halt and ban on the creation of artificial intelligence and/or autonomous robots; "thou shalt not make a machine in the likeness of a human mind" This rule governs the known universe (to vary degrees of success) for thousands of years. 
