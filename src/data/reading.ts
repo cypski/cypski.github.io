@@ -33,7 +33,7 @@ export const books: Book[] = [
     title: 'Künstliche Intelligenz, Was sie kann & was uns erwartet or Artificial Intelligence, What it can do and what awaits us',
     author: 'Manuela Lenzen',
     finished: false,
-    link: 'https://www.goodreads.com/book/show/8664353-unbroken',
+    link: 'https://www.goodreads.com/book/show/38604055-k-nstliche-intelligenz',
   },
   {
     title: 'Minds and Machines',
