@@ -64,6 +64,18 @@ export const cvSections: Section[] = [
     title: 'Publications',
     entries: [
       {
+        heading: '“Democratic AI-Readiness Index”',
+        subheading: 'Co-author',
+        period: 'July 2026',
+        meta: 'Berlin, DE',
+      },
+      {
+        heading: '“Trading Up: How R&D Investment Amplifies Trade-Driven AI Diffusion in the EU”',
+        subheading: 'Author',
+        period: 'April 2026',
+        meta: 'Berlin, DE',
+      },
+      {
         heading: '“Artificial Intelligence and Its Use in Combat”',
         subheading: 'Co-author',
         period: 'June 2025',
@@ -97,7 +109,7 @@ export const cvSections: Section[] = [
       },
       {
         category: 'Data',
-        items: ['Python', 'SQL', 'Visual Studio Code', 'GitHub (Git)', 'QGIS', 'STATA', 'Zotero', 'Qualtrics', 'Tableau'],
+        items: ['Python', 'SQL', 'Visual Studio Code', 'GitHub (Git)', 'QGIS', 'STATA', 'Zotero', 'Qualtrics', 'n8n'],
       },
       {
         category: 'Media',
