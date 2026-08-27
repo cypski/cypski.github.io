@@ -34,7 +34,7 @@ const legend = [
 
   <div class="map-panel" data-more-panel id="more-panel" role="region" aria-label="More about me — map">
     <div class="panel-inner container">
-      <p class="more-hint">Hover a country (or tap, on mobile) to see what I got up to there.</p>
+      <p class="more-hint">Hover over a shaded country (or tap, on mobile) to interact with it.</p>
 
       <div class="map-frame">
         <div class="map-stage">
@@ -161,7 +161,7 @@ const legend = [
     cursor: pointer;
   }
   .back-link:hover { color: var(--text-strong); }
-  .more-hint { margin: 0; color: var(--faint); font-size: 0.85rem; }
+  .more-hint { margin: 0 0 3rem; color: var(--faint); font-size: 0.85rem; }
 
   /* Map */
   .map-frame { overflow-x: auto; overflow-y: hidden; }
@@ -224,12 +224,7 @@ const legend = [
   .map-tip[hidden] { display: none; }
   .map-tip :global(.tt-name) { font-family: var(--font-display); font-weight: 600; color: var(--text-strong); }
   .map-tip :global(.tt-cap) {
-    display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;
     margin-top: 0.3rem; font-family: var(--font-mono); font-size: 0.74rem; color: var(--muted);
-  }
-  .map-tip :global(.tt-cap-tag) {
-    font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--faint);
-    border: 1px solid var(--border); border-radius: 999px; padding: 0.05rem 0.45rem;
   }
   .map-tip :global(.tt-notes) { margin: 0.55rem 0 0; padding-left: 1.05rem; }
   .map-tip :global(.tt-notes li) { margin-top: 0.2rem; line-height: 1.45; color: var(--text); }
@@ -302,7 +297,7 @@ const legend = [
       const d = info[iso];
       if (!d || !tip) return;
       let html = `<div class="tt-name">${esc(d.name)}</div>`;
-      if (d.capital) html += `<div class="tt-cap"><span class="tt-cap-tag">Capital city</span>${esc(d.capital)}</div>`;
+      if (d.capital) html += `<div class="tt-cap">${esc(d.capital)}</div>`;
       if (d.notes && d.notes.length) {
         html += '<ul class="tt-notes">' + d.notes.map((n: string) => `<li>${esc(n)}</li>`).join('') + '</ul>';
       }
