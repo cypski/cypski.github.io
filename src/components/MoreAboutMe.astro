@@ -1,0 +1,359 @@
+---
+import map from '../data/world-map.json';
+import { lived, visited, wantToVisit, colors, labels } from '../data/places';
+
+// iso -> status + detail lookups
+const statusOf: Record<string, 'lived' | 'visited' | 'want'> = {};
+const detail: Record<string, { capital?: string; notes?: string[] }> = {};
+for (const p of lived) { statusOf[p.country] = 'lived'; detail[p.country] = p; }
+for (const p of visited) { statusOf[p.country] = 'visited'; detail[p.country] = p; }
+for (const p of wantToVisit) { statusOf[p.country] = 'want'; detail[p.country] = p; }
+
+// Tooltip payload (only for tagged countries)
+const info: Record<string, { name: string; capital: string; notes: string[]; label: string }> = {};
+for (const c of map.countries) {
+  const s = statusOf[c.iso];
+  if (!s) continue;
+  info[c.iso] = { name: c.name, capital: detail[c.iso]?.capital ?? '', notes: detail[c.iso]?.notes ?? [], label: labels[s] };
+}
+
+const legend = [
+  { key: 'lived', label: labels.lived },
+  { key: 'visited', label: labels.visited },
+  { key: 'want', label: labels.want },
+] as const;
+---
+
+<section class="more" data-more style={`--c-lived:${colors.lived};--c-visited:${colors.visited};--c-want:${colors.want}`}>
+  <!-- Sticky label: floats to the top nav line while the map is open -->
+  <div class="more-trigger-wrap" data-more-triggerwrap>
+    <button type="button" class="more-trigger" data-more-trigger aria-expanded="false" aria-controls="more-panel">
+      More about me
+    </button>
+  </div>
+
+  <div class="map-panel" data-more-panel id="more-panel" role="region" aria-label="More about me — map">
+    <div class="panel-inner container">
+      <p class="more-hint">Hover a country (or tap, on mobile) to see what I got up to there.</p>
+
+      <div class="map-frame">
+        <div class="map-stage">
+          <svg class="world" viewBox={map.viewBox} role="img" aria-label="Map of countries I've lived in, visited, or want to visit" preserveAspectRatio="xMidYMid meet">
+            {map.countries.map((c) => (
+              <path
+                d={c.d}
+                data-iso={c.iso}
+                class:list={['country', statusOf[c.iso] && `c-${statusOf[c.iso]}`]}
+              />
+            ))}
+          </svg>
+
+          <ul class="legend" aria-hidden="true">
+            {legend.map((l) => (
+              <li><span class={`swatch s-${l.key}`}></span>{l.label}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <div class="more-bottom">
+        <button type="button" class="back-link" data-more-close>&uarr; Back to CV</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="map-tip" data-map-tip hidden></div>
+  <script type="application/json" data-place-info set:html={JSON.stringify(info)}></script>
+</section>
+
+<!-- While the map is open: hide the nav, and fade the CV + footer out of the way -->
+<style is:global>
+  [data-site-nav] { transition: opacity 0.35s ease; }
+  html.map-open [data-site-nav] { opacity: 0; pointer-events: none; }
+
+  /* Base = the return (fade IN on close): delayed until the map is gone and
+     the label has descended, so the CV reappears last. */
+  [data-cv-fade], .site-footer { transition: opacity 0.55s var(--ease) 0.8s; }
+  /* Opening (fade OUT): immediate, so the CV clears as the label rises. */
+  html.map-open [data-cv-fade],
+  html.map-open .site-footer { opacity: 0; pointer-events: none; transition: opacity 0.55s var(--ease); }
+</style>
+
+<style>
+  .more { margin-top: 3.5rem; }
+
+  .more-trigger-wrap { text-align: center; }
+
+  /* Pinned (fixed) at the top nav line while open; JS FLIP animates the float. */
+  .more-trigger-wrap.pinned {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding-top: 1.6rem;
+    padding-bottom: 1rem;
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+
+  .more-trigger {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: clamp(1.15rem, 4.2vw, 1.9rem); /* matches the nav tabs */
+    letter-spacing: -0.01em;
+    line-height: 1;
+    color: var(--text-strong);
+    background: none;
+    border: none;
+    padding: 0.4rem 0.6rem;
+    cursor: pointer;
+    transition: color 0.25s var(--ease);
+  }
+  .more-trigger:hover { color: var(--accent); }
+
+  /* Selected → identical underline to the active nav tab */
+  .more.is-open .more-trigger {
+    color: var(--text-strong);
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 7px;
+  }
+
+  /* Map = a fixed layer that FADES in (appears), never slides. */
+  .map-panel {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    background: var(--bg);
+    overflow-y: auto;
+    opacity: 0;
+    visibility: hidden;
+    /* Closing: fade out promptly; stay 'visible' until the label lands. */
+    transition: opacity 0.5s var(--ease), visibility 0s linear 1.2s;
+  }
+  .more.is-open .map-panel {
+    opacity: 1;
+    visibility: visible;
+    /* Opening: hold until the label has floated up (~1.2s), then appear. */
+    transition: opacity 0.45s var(--ease) 1.05s, visibility 0s;
+  }
+
+  .panel-inner {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    padding-top: 5.5rem;   /* clear the pinned label */
+    padding-bottom: clamp(1.5rem, 4vw, 2.5rem);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .map-panel { transition-duration: 0.001s; }
+  }
+
+  .more-bottom { padding-top: 0.5rem; }
+  .back-link {
+    align-self: flex-start;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--muted);
+    background: none; border: none; padding: 0;
+    cursor: pointer;
+  }
+  .back-link:hover { color: var(--text-strong); }
+  .more-hint { margin: 0; color: var(--faint); font-size: 0.85rem; }
+
+  /* Map */
+  .map-frame { overflow-x: auto; overflow-y: hidden; }
+  .map-stage { position: relative; width: 100%; min-width: 560px; }
+  .world { display: block; width: 100%; height: auto; }
+
+  .country {
+    fill: var(--bg);
+    stroke: var(--text-strong);
+    stroke-width: 0.75;
+    vector-effect: non-scaling-stroke;
+    stroke-linejoin: round;
+    transition: fill 0.2s ease;
+  }
+  .country:hover { stroke-width: 1.4; }
+  .c-lived   { fill: var(--c-lived); }
+  .c-visited { fill: var(--c-visited); }
+  .c-want    { fill: var(--c-want); }
+  .c-lived:hover, .c-visited:hover, .c-want:hover { filter: brightness(0.96); }
+
+  /* Legend — floated in the south-west (Pacific, west of Chile) */
+  .legend {
+    position: absolute;
+    left: 15%;
+    top: 72%;
+    margin: 0;
+    padding: 0.6rem 0.75rem;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text);
+    background: color-mix(in srgb, var(--bg) 78%, transparent);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+  }
+  .legend li { display: flex; align-items: center; gap: 0.5rem; white-space: nowrap; }
+  .swatch { width: 11px; height: 11px; border-radius: 3px; border: 1px solid var(--border-strong); flex-shrink: 0; }
+  .s-lived   { background: var(--c-lived); }
+  .s-visited { background: var(--c-visited); }
+  .s-want    { background: var(--c-want); }
+
+  /* Tooltip */
+  .map-tip {
+    position: fixed;
+    z-index: 120;
+    max-width: 15rem;
+    padding: 0.65rem 0.8rem;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow);
+    pointer-events: none;
+    font-size: 0.85rem;
+  }
+  .map-tip[hidden] { display: none; }
+  .map-tip :global(.tt-name) { font-family: var(--font-display); font-weight: 600; color: var(--text-strong); }
+  .map-tip :global(.tt-cap) {
+    display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;
+    margin-top: 0.3rem; font-family: var(--font-mono); font-size: 0.74rem; color: var(--muted);
+  }
+  .map-tip :global(.tt-cap-tag) {
+    font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--faint);
+    border: 1px solid var(--border); border-radius: 999px; padding: 0.05rem 0.45rem;
+  }
+  .map-tip :global(.tt-notes) { margin: 0.55rem 0 0; padding-left: 1.05rem; }
+  .map-tip :global(.tt-notes li) { margin-top: 0.2rem; line-height: 1.45; color: var(--text); }
+  .map-tip :global(.tt-status) {
+    margin-top: 0.55rem; font-family: var(--font-mono); font-size: 0.68rem;
+    text-transform: uppercase; letter-spacing: 0.06em; color: var(--faint);
+  }
+</style>
+
+<script>
+  function initMore() {
+    const section = document.querySelector<HTMLElement>('[data-more]');
+    if (!section || section.dataset.bound) return;
+    section.dataset.bound = '1';
+
+    const trigger = section.querySelector<HTMLButtonElement>('[data-more-trigger]');
+    const triggerWrap = section.querySelector<HTMLElement>('[data-more-triggerwrap]');
+    const panel = section.querySelector<HTMLElement>('[data-more-panel]');
+    const closers = section.querySelectorAll<HTMLButtonElement>('[data-more-close]');
+    const svg = section.querySelector<SVGSVGElement>('.world');
+    const tip = section.querySelector<HTMLElement>('[data-map-tip]');
+    const infoEl = section.querySelector('[data-place-info]');
+    const info = infoEl ? JSON.parse(infoEl.textContent || '{}') : {};
+    if (!trigger || !triggerWrap || !panel) return;
+
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const root = document.documentElement;
+
+    // FLIP: animate `el` from its position before `mutate()` to the one after.
+    function flip(el: HTMLElement, mutate: () => void) {
+      if (reduce) { mutate(); return; }
+      const first = el.getBoundingClientRect();
+      mutate();
+      const last = el.getBoundingClientRect();
+      const dx = first.left - last.left;
+      const dy = first.top - last.top;
+      if (!dx && !dy) return;
+      // Place it back at the start, force a reflow to commit that, then release.
+      el.style.transition = 'none';
+      el.style.transform = `translate(${dx}px, ${dy}px)`;
+      void el.offsetWidth; // force reflow — lock in the start position
+      // ~2x the tabs' 600ms — the label travels roughly twice as far.
+      el.style.transition = 'transform 1200ms cubic-bezier(0.65, 0.05, 0.36, 1)';
+      el.style.transform = '';
+    }
+
+    const open = () => {
+      trigger.setAttribute('aria-expanded', 'true');
+      root.classList.add('map-open');                             // fade the nav out
+      flip(triggerWrap, () => triggerWrap.classList.add('pinned')); // label floats UP to the top
+      section.classList.add('is-open');                           // map fades IN (appears)
+      root.style.overflow = 'hidden';                             // caged
+    };
+
+    const close = () => {
+      trigger.setAttribute('aria-expanded', 'false');
+      if (tip) tip.hidden = true;
+      section.classList.remove('is-open');                          // map fades OUT
+      flip(triggerWrap, () => triggerWrap.classList.remove('pinned')); // label floats back DOWN
+      root.classList.remove('map-open');
+      root.style.overflow = '';
+    };
+
+    trigger.addEventListener('click', () => (section.classList.contains('is-open') ? close() : open()));
+    closers.forEach((b) => b.addEventListener('click', close));
+
+    // Tooltip ------------------------------------------------------------
+    function show(iso: string, x: number, y: number) {
+      const d = info[iso];
+      if (!d || !tip) return;
+      let html = `<div class="tt-name">${esc(d.name)}</div>`;
+      if (d.capital) html += `<div class="tt-cap"><span class="tt-cap-tag">Capital city</span>${esc(d.capital)}</div>`;
+      if (d.notes && d.notes.length) {
+        html += '<ul class="tt-notes">' + d.notes.map((n: string) => `<li>${esc(n)}</li>`).join('') + '</ul>';
+      }
+      html += `<div class="tt-status">${esc(d.label)}</div>`;
+      tip.innerHTML = html;
+      tip.hidden = false;
+      const pad = 14;
+      const w = tip.offsetWidth, h = tip.offsetHeight;
+      let left = x + pad, top = y + pad;
+      if (left + w > window.innerWidth - 8) left = x - w - pad;
+      if (top + h > window.innerHeight - 8) top = y - h - pad;
+      tip.style.left = Math.max(8, left) + 'px';
+      tip.style.top = Math.max(8, top) + 'px';
+    }
+
+    if (svg && tip) {
+      const hit = (t: EventTarget | null) => (t as Element)?.closest?.('path[data-iso]') as SVGPathElement | null;
+      svg.addEventListener('pointermove', (e) => {
+        const p = hit(e.target);
+        const iso = p?.getAttribute('data-iso');
+        if (iso && info[iso]) show(iso, e.clientX, e.clientY);
+        else tip.hidden = true;
+      });
+      svg.addEventListener('pointerleave', () => { tip.hidden = true; });
+      svg.addEventListener('click', (e) => {
+        const p = hit(e.target);
+        const iso = p?.getAttribute('data-iso');
+        if (iso && info[iso]) {
+          if (!tip.hidden && tip.dataset.iso === iso) { tip.hidden = true; return; }
+          tip.dataset.iso = iso;
+          show(iso, e.clientX, e.clientY);
+        } else tip.hidden = true;
+      });
+    }
+  }
+
+  initMore();
+  if (!(window as any).__moreBound) {
+    (window as any).__moreBound = true;
+    document.addEventListener('astro:page-load', initMore);
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      const s = document.querySelector('[data-more].is-open');
+      if (!s) return;
+      document.documentElement.style.overflow = '';
+      document.documentElement.classList.remove('map-open');
+      s.classList.remove('is-open');
+      s.querySelector('[data-more-triggerwrap]')?.classList.remove('pinned');
+      document.querySelector('[data-more-trigger]')?.setAttribute('aria-expanded', 'false');
+      const tp = document.querySelector<HTMLElement>('[data-map-tip]');
+      if (tp) tp.hidden = true;
+    });
+  }
+</script>

@@ -1,10 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { cvHeader, cvSections } from '../data/cv';
+import MoreAboutMe from '../components/MoreAboutMe.astro';
 ---
 
 <BaseLayout title="CV" view="cv" description="Education, publications, and skills of Casimir Wypyski.">
-  <div class="container container-reading section">
+  <div class="container container-reading section" data-cv-fade>
     <header class="cv-head">
       <p class="eyebrow">Curriculum vitae</p>
       <h1>{cvHeader.name}</h1>
@@ -63,6 +64,9 @@ import { cvHeader, cvSections } from '../data/cv';
       </section>
     ))}
   </div>
+
+  {/* Easter egg: "more about me" → the interactive map (full-width) */}
+  <MoreAboutMe />
 </BaseLayout>
 
 <style>

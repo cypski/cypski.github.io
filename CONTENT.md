@@ -142,7 +142,33 @@ Open `src/data/reading.ts`. Add a book by appending to the `books` list:
 
 ---
 
-## 4. Publish your changes
+## 4. Edit the map ("more about me")
+
+The interactive map at the bottom of the CV is driven by `src/data/places.ts`.
+There are three lists — `lived`, `visited`, and `wantToVisit`. Any country you
+**don't** list stays uncoloured ("never lived in"). Add a country to a list:
+
+```ts
+{
+  country: 'IT',                 // ISO 3166-1 alpha-2 code (see below)
+  capital: 'Rome',               // optional subtitle
+  notes: ['A week in Tuscany', 'Loved Florence'],  // optional bullet points
+},
+```
+
+- **Country codes** are the 2-letter ISO codes (`DE`, `US`, `FR`, `JP`, …).
+  Full list: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
+- Put a country in **only one** list.
+- **Recolour** the map by editing the `colors` block at the top of the file.
+- `capital` and `notes` are optional — omit them and the country still colours.
+
+You should not need to touch the map itself. But if you ever want to regenerate
+the base map (it's committed as `src/data/world-map.json`), run `npm run
+generate:map`.
+
+---
+
+## 5. Publish your changes
 
 The site auto-deploys to **cypski.github.io** whenever you push to the
 `main` branch (via `.github/workflows/deploy.yml`).
