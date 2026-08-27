@@ -69,12 +69,14 @@ const legend = [
 <!-- While the map is open: hide the nav, and fade the CV + footer out of the way -->
 <style is:global>
   /* Base = the return (fade IN on close): delayed until the map is gone and the
-     label has descended, so nav + CV + footer all reappear together, last. */
-  [data-site-nav], [data-cv-fade], .site-footer { transition: opacity 0.55s var(--ease) 0.8s; }
-  /* Opening (fade OUT): immediate, so everything clears as the label rises. */
-  html.map-open [data-site-nav],
+     label has descended, so CV + footer reappear last, with the tabs (the tabs'
+     matching fade lives in Nav.astro; the frosted bar stays put as a backdrop). */
+  [data-cv-fade], .site-footer { transition: opacity 0.55s var(--ease) 0.8s; }
+  /* Opening (fade OUT): the CV/footer clear FASTER (0.3s) than the bar + tabs
+     (0.55s), so the tall background content is fully gone before them — no more
+     content showing through the frosted glass as it fades. */
   html.map-open [data-cv-fade],
-  html.map-open .site-footer { opacity: 0; pointer-events: none; transition: opacity 0.55s var(--ease); }
+  html.map-open .site-footer { opacity: 0; pointer-events: none; transition: opacity 0.3s var(--ease); }
 </style>
 
 <style>

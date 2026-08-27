@@ -39,7 +39,20 @@ const tabs = [
     opacity: 0;
     transition: opacity var(--dur) var(--ease);
   }
-  :global(html:not([data-view='home'])) .site-nav::before { opacity: 1; }
+  :global(html:not([data-view='home'])) .site-nav::before {
+    opacity: 1;
+    /* fade IN is delayed so the "More about me" label clears the bar first;
+       0.75s (1.5x) so the bar eases in smoothly */
+    transition: opacity 0.75s var(--ease) 0.4s;
+  }
+  /* While the map is open, hide the bar; on close it fades back in (delayed
+     above) once the label has descended past it. On the way DOWN it fades out
+     over 0.55s — identical to the tabs and CV content. */
+  :global(html.map-open) .site-nav::before {
+    opacity: 0;
+    /* way down: the bar persists a bit longer — last to fade */
+    transition: opacity 0.7s var(--ease);
+  }
 
   .nav-list {
     pointer-events: auto;
@@ -51,8 +64,19 @@ const tabs = [
     padding: 0;
     /* Floated (a section is open): the tags rest just below the top edge. */
     transform: translateY(1.6rem);
-    transition: transform var(--dur) var(--ease);
+    /* opacity fade (delayed) is for the map easter egg's close; see below */
+    transition: transform var(--dur) var(--ease), opacity 0.55s var(--ease) 0.8s;
     will-change: transform;
+  }
+
+  /* While the map easter egg is open, fade just the tabs out (the frosted bar
+     stays as a backdrop). Fade-out is immediate; fade-in inherits the 0.8s
+     delay above, so the tabs return with the CV text — onto the existing bar. */
+  :global(html.map-open) .nav-list {
+    opacity: 0;
+    pointer-events: none;
+    /* way down: tabs disappear on the same interval as the background content */
+    transition: transform var(--dur) var(--ease), opacity 0.3s var(--ease);
   }
 
   /* Home: the tags sit centred in the viewport. Only the Y position changes —
