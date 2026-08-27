@@ -105,7 +105,7 @@ export const visited: Place[] = [
     capital: 'Budapest'
   },
   {
-    country: 'TU',
+    country: 'TR',
     capital: 'Ankara'
   },
   {
