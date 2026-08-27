@@ -80,17 +80,24 @@ const legend = [
 </style>
 
 <style>
-  .more { margin-top: 3.5rem; }
+  .more { margin-top: 2rem; }
 
-  .more-trigger-wrap { text-align: center; }
+  /* Padding lives here (both states) so the label's text keeps the same offset
+     inside its box whether resting or pinned — otherwise it jitters down by the
+     padding amount on the first frame of the float. */
+  .more-trigger-wrap {
+    text-align: center; padding-top: 1.6rem; padding-bottom: 1rem;
+    /* Always stack above the map (z 90) and nav bar (z 50) — even mid-descent
+       when unpinned — so the label never ducks behind the still-fading map on
+       the way back down (that was the flash). Matches the pinned z-index. */
+    position: relative; z-index: 100;
+  }
 
   /* Pinned (fixed) at the top nav line while open; JS FLIP animates the float. */
   .more-trigger-wrap.pinned {
     position: fixed;
     top: 0; left: 0; right: 0;
     z-index: 100;
-    padding-top: 1.6rem;
-    padding-bottom: 1rem;
     background: color-mix(in srgb, var(--bg) 82%, transparent);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
