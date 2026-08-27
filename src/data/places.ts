@@ -55,32 +55,132 @@ export const lived: Place[] = [
   {
     country: 'DE',
     capital: 'Berlin',
-    notes: ['Master of International Affairs at the Hertie School', 'Currently based here'],
+    notes: ['MIA at the Hertie School', '<3 Berlin'],
   },
   {
     country: 'US',
     capital: 'Washington, D.C.',
-    notes: ['Grew up here', 'Undergrad at Purdue; MPA at Syracuse'],
+    notes: ['48 states visited', 'Undergrad at Purdue', 'MPA at Syracuse'],
+  },
+   {
+    country: 'PL',
+    capital: 'Warsaw',
+    notes: ['Earned Eagle Scout (BSA)', 'IB at the American School of Warsaw'],
+  },
+  {
+    country: 'AZ',
+    capital: 'Baku',
+    notes: ['Fond of Old City Baku', 'Lots of great urbex'],
+  },
+  {
+    country: 'CA',
+    capital: 'Ottawa',
+    notes: ['Started playing ice hockey', 'Learned the piano'],
   },
 ];
 
 export const visited: Place[] = [
   {
-    country: 'FR',
-    capital: 'Paris',
-    notes: ['Studied French (C1)', 'A minor in undergrad'],
+    country: 'AT',
+    capital: 'Vienna'
   },
   {
-    country: 'PL',
-    capital: 'Warsaw',
-    notes: ['Family roots'],
+    country: 'CZ',
+    capital: 'Prague'
+  },
+  {
+    country: 'UA',
+    capital: 'Kiev'
+  },
+  {
+    country: 'AL',
+    capital: 'Tirana'
+  },
+  {
+    country: 'BG',
+    capital: 'Sofia'
+  },
+  {
+    country: 'HU',
+    capital: 'Budapest'
+  },
+  {
+    country: 'TU',
+    capital: 'Ankara'
+  },
+  {
+    country: 'GE',
+    capital: 'Tbilisi'
+  },
+  {
+    country: 'AE',
+    capital: 'Abu Dhabi'
+  },
+  {
+    country: 'SI',
+    capital: 'Ljubljana'
+  },
+  {
+    country: 'GR',
+    capital: 'Athens'
+  },
+   {
+    country: 'GB-ENG',
+    capital: 'London'
+  },
+   {
+    country: 'GB-SCT',
+    capital: 'Edinburgh'
+  },
+   {
+    country: 'SK',
+    capital: 'Bratislava'
+  },
+   {
+    country: 'NL',
+    capital: 'Amsterdam'
+  },
+   {
+    country: 'ZA',
+    capital: 'Cape Town'
+  },
+  {
+    country: 'NA',
+    capital: 'Windhoek'
+  },
+  {
+    country: 'BW',
+    capital: 'Gaborone'
+  },
+  {
+    country: 'ZW',
+    capital: 'Harare'
   },
 ];
 
 export const wantToVisit: Place[] = [
   {
-    country: 'JP',
-    capital: 'Tokyo',
-    notes: ['Top of the list'],
+    country: 'DZ',
+    capital: 'Algiers',
+  },
+   {
+    country: 'CO',
+    capital: 'Bogota',
+  },
+   {
+    country: 'CN',
+    capital: 'Beijing',
+  },
+  {
+    country: 'VN',
+    capital: 'Hanoi',
+  },
+  {
+    country: 'KR',
+    capital: 'Seoul',
+  },
+  {
+    country: 'OM',
+    capital: 'Muscat',
   },
 ];
