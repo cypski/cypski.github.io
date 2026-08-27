@@ -48,8 +48,20 @@ for (const f of feats) {
   if (!d) continue;
   const numeric = String(f.id).padStart(3, '0');
   const iso = isoCountries.numericToAlpha2(numeric) || '';
+  // The UK is drawn as its four nations instead (see below) — skip the whole.
+  if (iso === 'GB') continue;
   if (iso) mapped++;
   countries.push({ iso, name: f.properties.name, d });
+}
+
+// Split the UK into England / Scotland / Wales / Northern Ireland, projected
+// with the same projection so they sit exactly where the single UK shape was.
+const uk = JSON.parse(readFileSync(root + 'src/data/uk-subunits.geojson', 'utf8'));
+for (const f of uk.features) {
+  const d = path(f);
+  if (!d) continue;
+  countries.push({ iso: f.properties.code, name: f.properties.name, d });
+  mapped++;
 }
 
 const out = {
