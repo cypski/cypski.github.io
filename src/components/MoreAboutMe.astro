@@ -68,13 +68,11 @@ const legend = [
 
 <!-- While the map is open: hide the nav, and fade the CV + footer out of the way -->
 <style is:global>
-  [data-site-nav] { transition: opacity 0.35s ease; }
-  html.map-open [data-site-nav] { opacity: 0; pointer-events: none; }
-
-  /* Base = the return (fade IN on close): delayed until the map is gone and
-     the label has descended, so the CV reappears last. */
-  [data-cv-fade], .site-footer { transition: opacity 0.55s var(--ease) 0.8s; }
-  /* Opening (fade OUT): immediate, so the CV clears as the label rises. */
+  /* Base = the return (fade IN on close): delayed until the map is gone and the
+     label has descended, so nav + CV + footer all reappear together, last. */
+  [data-site-nav], [data-cv-fade], .site-footer { transition: opacity 0.55s var(--ease) 0.8s; }
+  /* Opening (fade OUT): immediate, so everything clears as the label rises. */
+  html.map-open [data-site-nav],
   html.map-open [data-cv-fade],
   html.map-open .site-footer { opacity: 0; pointer-events: none; transition: opacity 0.55s var(--ease); }
 </style>
