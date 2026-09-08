@@ -1,5 +1,5 @@
 ---
-title: A New Home on the Web
+title: News Aggregators and the Overton Window
 description: An exploration of how news aggregators like Ground News may shift the Overton Window.
 pubDate: 2026-08-26
 tags: ["media bias", "policy environment", "agenda setting"]
