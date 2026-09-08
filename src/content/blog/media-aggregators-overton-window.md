@@ -1,11 +1,10 @@
-title 	A New Home on the Web
-description 	An exploration of how news aggregators like Ground News may shift the Overton Window.
-pubDate 	2026-08-26
-tags    
-media 
-policy 
-agenda setting
-draft 	true
+---
+title: A New Home on the Web
+description: An exploration of how news aggregators like Ground News may shift the Overton Window.
+pubDate: 2026-08-26
+tags: ["media bias", "policy environment", "agenda setting"]
+draft: true
+---
 
 Having spent over half a decade in university and across various positions focused on policy, I've come across many theories that try to taxonomise the ideas that comprise the political "left" and political "right". Most are familiar with the wide variety of political compasses. But there are a handful of others that have gained some degree of mainstream appeal due to their accessibility and simple premises:
 
