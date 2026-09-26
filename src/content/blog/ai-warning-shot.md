@@ -1,6 +1,6 @@
 ---
 title: "Will we hear the AI warning shot?"
-description: "AI safety has become all the rage — but will be properly warned of an impending catastrophic sencario?"
+description: "AI safety has become all the rage, recently — but will we be properly warned of an impending catastrophic scenario?"
 pubDate: 2026-09-268
 tags: ["artificial intelligence", "incentive structures", misalignment, scenario building]
 draft: false
