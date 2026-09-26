@@ -2,7 +2,7 @@
 title: 'Prelude of "To Be Butlerian"'
 description: "Thinking about a post-2022 world without artificial intelligence."
 pubDate: 2026-08-26
-tags: ["artificial intelligence", "scenario", "philosophy"]
+tags: ["artificial intelligence", "scenario building", "philosophy"]
 draft: false
 ---
 
