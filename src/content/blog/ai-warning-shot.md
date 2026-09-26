@@ -30,7 +30,7 @@ In this section, I propose three actors that could be inclined to conceal a warn
 
 ### The state 
 
-I'm not referring exclusively to the United States. Yes, the US verifiably leads the frontier and is home to OpenAI, Anthropic, Google, Meta, etc. But the framing is agnostic; I assume that any state with the same stock of frontier AI firms would be inclined to follow the same path. 
+I'm not referring exclusively to the United States. Yes, the US verifiably leads the frontier and is home to OpenAI, Anthropic, Google, Meta, etc. The the framing is agnostic, though; I assume that any state with a comparable stock of frontier AI firms would be inclined to follow the same path. 
 
 The US lacks a coherent federal framework on AI, though last year's vote on the 10-year moratorium for state regulation should not be taken as a denial of appetite for one. It's a front-and-centre policy issue, and one that will help determine the Republicans' performance in the midterms and almost certainly the Democrats' performance in the 2028 presidential race. That said, I understand any external scepticism: President Trump has publicly opposed direct regulation of artificial intelligence (that is, if it's not renamed to "[super intelligence](https://www.msn.com/en-us/tv/news/trump-claims-xi-likes-idea-of-renaming-ai-super-intelligence-after-his-online-poll/ar-AA2cYmiI)").
 
