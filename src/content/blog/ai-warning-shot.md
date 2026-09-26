@@ -6,7 +6,7 @@ tags: ["artificial intelligence", "incentive structures", misalignment, scenario
 draft: false
 ---
 
-The purpose of a warning shot, colloquially, is to deter a future conflict. One perceives a threat, assesses that the consequences of the fulfilled threat will be worse than the response to shot itself, and therefore fires. In this article, I refer more to an event that precedes a consequential event. There isn't necessarily someone who fires, but a worse outcome still looms on the horizon should the shot not be heeded. 
+The purpose of a warning shot, colloquially, is to deter a future conflict. One perceives a threat, assesses that the consequences of the fulfilled threat will be worse than the response to shot itself, and proceeds to fire. In this article, I refer more to an event that precedes a consequential event. There isn't necessarily someone who fires, but a worse outcome still looms on the horizon should the shot not be heeded. 
 
 I'm confident that humanity will take an "AI warning shot" of credible severity seriously. I'm not confident that humanity will hear it in the first place.
 
