@@ -1,6 +1,6 @@
 ---
 title: "Prediction markets as a public good"
-description: "Prediction markets continue to engrain themselves into everday life. In this article, I take a balanced approach in assessing the idea that prediction markets serve as a public good fueled by priced-in insider information, as put forth by proponents of their popularisation."
+description: "Prediction markets continue to engrain themselves into everday life. In this article, I take a balanced approach in assessing the idea that prediction markets serve as a public good fueled by the pricing in of insider information, as suggested by proponents of their popularisation."
 pubDate: 2026-10-01
 tags: ["game theory", "markets", "legislation & regulation"]
 draft: false
