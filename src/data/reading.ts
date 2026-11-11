@@ -16,7 +16,12 @@ export interface Book {
 }
 
 export const books: Book[] = [
-  // ↓ Replace these examples with your own.
+  {
+    title: 'A Short Stay in Hell',
+    author: 'Steven L. Peck',
+    finished: false,
+    link: 'https://www.goodreads.com/book/show/13456414-a-short-stay-in-hell',
+  },
   {
     title: 'The Alignment Problem',
     author: 'Brian Christian',
