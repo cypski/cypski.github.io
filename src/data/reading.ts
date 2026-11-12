@@ -20,13 +20,19 @@ export const books: Book[] = [
     title: 'A Short Stay in Hell',
     author: 'Steven L. Peck',
     finished: true,
-    link: 'https://www.goodreads.com/book/show/16143402-all-tomorrows',
+    link: 'https://www.goodreads.com/book/show/13456414-a-short-stay-in-hell?ref=nav_sb_ss_1_20',
   },
   {
     title: 'The Alignment Problem',
     author: 'Brian Christian',
     finished: false,
     link: 'https://www.goodreads.com/book/show/50489349-the-alignment-problem',
+  },
+  {
+    title: 'Ficciones',
+    author: 'Jorge Luis Borges',
+    finished: false,
+    link: 'https://www.goodreads.com/book/show/426504',
   },
   {
     title: 'Heart of Europe: A Short History of Poland',
@@ -39,6 +45,12 @@ export const books: Book[] = [
     author: 'Manuela Lenzen',
     finished: false,
     link: 'https://www.goodreads.com/book/show/38604055-k-nstliche-intelligenz',
+  },
+    {
+    title: 'Erewhon',
+    author: 'Samuel Butler',
+    finished: false,
+    link: 'https://www.goodreads.com/book/show/516570',
   },
   {
     title: 'Minds and Machines',
@@ -70,6 +82,42 @@ export const books: Book[] = [
     finished: false,
     link: 'https://www.goodreads.com/book/show/13456414-a-short-stay-in-hell',
   },
+  {
+    title: "The Art of Living",
+    author: 'Epicetus',
+    finished: true,
+    link: 'https://www.goodreads.com/book/show/61957745',
+  },
+   {
+    title: "Huis clos or No Exit ",
+    author: 'Jean Paul Sartre',
+    finished: true,
+    link: 'https://www.goodreads.com/book/show/971726',
+  },
+   {
+    title: "Le mythe de sisyphe or The Myth of Sisyphus",
+    author: 'Albert Camus',
+    finished: true,
+    link: 'https://www.goodreads.com/book/show/91950.The_Myth_of_Sisyphus?ref=nav_sb_ss_1_15',
+  },
+   {
+    title: "Man's Search for Meaning",
+    author: 'Viktor E. Frankl',
+    finished: true,
+    link: 'https://www.goodreads.com/book/show/4069.Man_s_Search_for_Meaning',
+  },
+  {
+    title: "Matilda",
+    author: 'Roald Dahl',
+    finished: true,
+    link: 'https://www.goodreads.com/book/show/39988',
+  },
+  {
+    title: "The Ones Who Walk Away from Omelas",
+    author: 'Ursula K. Le Guin',
+    finished: true,
+    link: 'https://www.goodreads.com/book/show/92625.The_Ones_Who_Walk_Away_from_Omelas?ref=nav_sb_ss_1_33',
+  },
    {
     title: 'On Experience',
     author: 'Michel de Montaigne',
@@ -77,10 +125,22 @@ export const books: Book[] = [
     link: 'https://www.goodreads.com/book/show/25797832-on-experience',
   },
    {
-    title: "L'Étranger or The Stranger",
+    title: "L'étranger or The Stranger",
     author: 'Albert Camus',
     finished: true,
     link: 'https://www.goodreads.com/book/show/49552.The_Stranger',
+  },
+   {
+    title: 'The AI Mirror',
+    author: 'Shannon Vallor',
+    finished: true,
+    link: 'https://www.goodreads.com/book/show/197812306',
+  },
+  {
+    title: "On the Shortness of Life",
+    author: 'Seneca',
+    finished: true,
+    link: 'https://www.goodreads.com/book/show/97412',
   },
    {
     title: 'Unbroken: A World War II Story of Survival, Resilience and Redemption',
@@ -94,6 +154,24 @@ export const books: Book[] = [
     finished: true,
     link: 'https://www.goodreads.com/book/show/52036.Siddhartha',
   },
+   {
+    title: 'Groundwork of the Metaphysics of Morals',
+    author: 'Immanuel Kant',
+    finished: true,
+    link: 'https://www.goodreads.com/book/show/60080',
+  },
+  {
+    title: 'Darwin Amongst the Machines',
+    author: 'Samuel Butler',
+    finished: true,
+    link: 'https://www.goodreads.com/book/show/191355',
+  },
+  {
+    title: 'Hills Like White Elephants',
+    author: 'Ernest Hemingway',
+    finished: true,
+    link: 'https://www.goodreads.com/book/show/56814505',
+  },
   {
     title: "Man's Search for Meaning",
     author: 'Viktor E. Frankl',
@@ -101,7 +179,7 @@ export const books: Book[] = [
     link: 'https://www.goodreads.com/book/show/4069.Man_s_Search_for_Meaning',
   },
   {
-    title: 'Le Mur or The Wall',
+    title: 'Le mur or The Wall',
     author: 'Jean Paul Sartre',
     finished: true,
     link: 'https://www.goodreads.com/book/show/770661.Le_mur',
