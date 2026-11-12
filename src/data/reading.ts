@@ -19,8 +19,8 @@ export const books: Book[] = [
   {
     title: 'A Short Stay in Hell',
     author: 'Steven L. Peck',
-    finished: false,
-    link: 'https://www.goodreads.com/book/show/13456414-a-short-stay-in-hell',
+    finished: true,
+    link: 'https://www.goodreads.com/book/show/16143402-all-tomorrows',
   },
   {
     title: 'The Alignment Problem',
@@ -65,10 +65,10 @@ export const books: Book[] = [
     link: 'https://www.goodreads.com/book/show/60321447-chip-war',
   },
    {
-    title: 'The Last Question',
-    author: 'Isaac Asimov',
-    finished: true,
-    link: 'https://www.goodreads.com/book/show/4808763-the-last-question',
+    title: 'All Tomorrows: The Myriad Species and Mixed Fortunes of Man',
+    author: 'C.M. Koseman',
+    finished: false,
+    link: 'https://www.goodreads.com/book/show/13456414-a-short-stay-in-hell',
   },
    {
     title: 'On Experience',
