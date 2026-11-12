@@ -46,12 +46,6 @@ export const books: Book[] = [
     finished: false,
     link: 'https://www.goodreads.com/book/show/38604055-k-nstliche-intelligenz',
   },
-    {
-    title: 'Erewhon',
-    author: 'Samuel Butler',
-    finished: false,
-    link: 'https://www.goodreads.com/book/show/516570',
-  },
   {
     title: 'Minds and Machines',
     author: 'W. Sluckin',
@@ -75,6 +69,12 @@ export const books: Book[] = [
     author: 'Chris Miller',
     finished: true,
     link: 'https://www.goodreads.com/book/show/60321447-chip-war',
+  },
+    {
+    title: 'Erewhon',
+    author: 'Samuel Butler',
+    finished: true,
+    link: 'https://www.goodreads.com/book/show/516570',
   },
    {
     title: 'All Tomorrows: The Myriad Species and Mixed Fortunes of Man',
