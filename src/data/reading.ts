@@ -119,6 +119,12 @@ export const books: Book[] = [
     link: 'https://www.goodreads.com/book/show/39988',
   },
   {
+    title: "On Liberty",
+    author: 'John Stuart Mill',
+    finished: true,
+    link: 'https://www.goodreads.com/book/show/385228',
+  },
+  {
     title: "The Ones Who Walk Away from Omelas",
     author: 'Ursula K. Le Guin',
     finished: true,
