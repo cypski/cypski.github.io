@@ -79,8 +79,14 @@ export const books: Book[] = [
    {
     title: 'All Tomorrows: The Myriad Species and Mixed Fortunes of Man',
     author: 'C.M. Koseman',
+    finished: true,
+    link: 'https://www.goodreads.com/book/show/16143402',
+  },
+  {
+    title: 'Piranesi',
+    author: 'Sussana Clarke',
     finished: false,
-    link: 'https://www.goodreads.com/book/show/13456414-a-short-stay-in-hell',
+    link: 'https://www.goodreads.com/book/show/50202953-piranesi',
   },
   {
     title: "The Art of Living",
